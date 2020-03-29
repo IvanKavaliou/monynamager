@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="fragments/general :: header"/>
+</head>
+<body>
+<div class="container">
+    <th:block th:insert="fragments/header :: header" />
+    <div class="hero-unit">
+        <h1>Test</h1>
+        <p>
+            <span th:text="#{hello.message}"></span>
+        </p>
+        <p>
+
+        </p>
+    </div>
+
+    <table>
+        <th:block th:each="currency : ${currencyList}">
+            <tr>
+                <td th:text="${currency.name}">...</td>
+                <td th:text="${currency.code}">...</td>
+            </tr>
+
+        </th:block>
+    </table>
+
+    <th:block th:insert="fragments/general :: footer"/>
+</div>
+</body>
+</html>
