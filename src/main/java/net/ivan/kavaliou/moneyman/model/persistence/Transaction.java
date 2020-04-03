@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
+@Entity (name = "transaction")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -23,7 +23,7 @@ public class Transaction  {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_users", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private User user;
@@ -39,7 +39,7 @@ public class Transaction  {
     private  float value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_transaction_catrgory", nullable = false)
+    @JoinColumn(name = "id_transaction_category", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private TransactionCategory transactionCategory;

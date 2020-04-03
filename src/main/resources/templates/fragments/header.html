@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <div>
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean">
+            <div class="container">
+                <a class="navbar-brand" href="#">[[#{label.appName}]]</a>
+                <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
+                 <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#">First Item</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Second Item</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Third Item</a></li>
+                        <li class="nav-item"  role="presentation">
+                            <select id="locales" class="nice-select custom-select custom-select-sm">
+                                <option value="" selected>[[#{select.language}]]</option>
+                                <option value="ru">[[#{lang.rus}]]</option>
+                                <option value="en">[[#{lang.eng}]]</option>
+                                <option value="pl">[[#{lang.pol}]]</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption != ''){
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+</th:block>
+</html>
