@@ -22,7 +22,7 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(@RequestParam(name = "user_id", required = false) Integer user_id, Model model) {
-
+        log.info("MainController::main");
         model.addAttribute("message", env.getProperty("welcome.message"));
         model.addAttribute("transactions", transactionService.getAllByUserId(user_id));
      //   model.addAttribute("currencyList", currencyService.getAllCurrency());

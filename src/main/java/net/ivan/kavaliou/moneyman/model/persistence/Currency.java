@@ -1,6 +1,7 @@
 package net.ivan.kavaliou.moneyman.model.persistence;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Currency{

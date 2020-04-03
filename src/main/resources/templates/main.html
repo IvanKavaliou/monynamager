@@ -4,9 +4,8 @@
     <th:block th:insert="fragments/general :: header"/>
 </head>
 <body>
+<th:block th:insert="fragments/header :: header" />
 <div class="container">
-    <th:block th:insert="fragments/header :: header" />
-
     <span th:text="${message}"></span>
 
     <span th:text="#{label.income}"></span>
@@ -20,8 +19,7 @@
             <td th:text="${transaction.date}">...</td>
         </tr>
     </th:block>
-
-    <th:block th:insert="fragments/general :: footer"/>
 </div>
+<th:block th:insert="fragments/general :: footer"/>
 </body>
 </html>

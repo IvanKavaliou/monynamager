@@ -27,7 +27,7 @@ public class RootController {
 
     @GetMapping("/")
     public String root(Model model) {
-        log.info("Simple log info ");
+        log.info("RootController::root");
         model.addAttribute("message", welcomeMessage);
         model.addAttribute("currencyList", currencyService.getAllCurrency());
         return INDEX_VIEW; //view

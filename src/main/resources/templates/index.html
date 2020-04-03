@@ -4,8 +4,8 @@
     <th:block th:insert="fragments/general :: header"/>
 </head>
 <body>
+<th:block th:insert="fragments/header :: header" />
 <div class="container">
-    <th:block th:insert="fragments/header :: header" />
     <div class="hero-unit">
         <h1>Test</h1>
         <p>
@@ -26,8 +26,7 @@
         <a class="btn btn-primary" href="/main?user_id=1" role="button">Link</a>
 
     </table>
-
-    <th:block th:insert="fragments/general :: footer"/>
 </div>
+<th:block th:insert="fragments/general :: footer"/>
 </body>
 </html>

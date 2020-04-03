@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="fragments/general :: header"/>
+</head>
+<body>
+<th:block th:insert="fragments/header :: header" />
+<div class="container">
+    <h2>[[#{label.registration}]]</h2>
+    <div th:if="${param.error}">
+        [[#{error.invalidLogin}]]
+    </div>
+    <div th:if="${param.logout}">
+        [[#{message.logout}]]
+    </div>
+    <form th:action="@{/registration}" method="post">
+        <div><label> [[#{label.email}]] : <input type="email" name="email"/> </label></div>
+        <div><label> [[#{label.password}]] : <input type="password" name="password"/> </label></div>
+        <div><input type="submit" th:value="#{label.registr}"/></div>
+    </form>
+</div>
+<th:block th:insert="fragments/general :: footer"/>
+</body>
+</html>
