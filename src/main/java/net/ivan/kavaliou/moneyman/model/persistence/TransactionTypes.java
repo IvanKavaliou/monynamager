@@ -18,12 +18,12 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 public class TransactionTypes {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "code", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 10)
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 }

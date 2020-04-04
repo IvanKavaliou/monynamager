@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class Transaction  {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,4 +47,9 @@ public class Transaction  {
 
     @NotNull
     private LocalDateTime date;
+
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 1, max = 100)
+    private String name;
 }

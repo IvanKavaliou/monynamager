@@ -27,12 +27,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/registration", "/static/**", "/styles/**").permitAll()
+                    .antMatchers("/",
+                            "/registration",
+                            "/static/**",
+                            "/styles/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
+                    .formLogin().loginPage("/login").permitAll()
+                .and()
+                    .formLogin().defaultSuccessUrl("/main", true)
                 .and()
                     .logout()
                     .permitAll();
@@ -46,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .usersByUsernameQuery("SELECT email, password, enabled FROM users " +
                                       "WHERE email = ?")
-                .authoritiesByUsernameQuery("SELECT u.email, ur.role FROM users u " +
+                .authoritiesByUsernameQuery("SELECT u.email, ur.roles FROM users u " +
                                             "INNER JOIN user_roles ur ON u.id = ur.id_users " +
                                             "WHERE u.email = ?");
     }

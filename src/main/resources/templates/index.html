@@ -19,7 +19,7 @@
     <table>
         <th:block th:each="currency : ${currencyList}">
             <tr>
-                <td th:text="${currency.name}">...</td>
+                <td>[[#{label.currency. + ${currency.currencyType}}]]</td>
                 <td th:text="${currency.currencyType}">...</td>
             </tr>
         </th:block>

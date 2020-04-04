@@ -32,9 +32,17 @@ public class UsersService {
         }
 
         user.setEnabled(true);
-        user.setRole(Collections.singleton(UserRoles.USER));
+        user.setRoles(Collections.singleton(UserRoles.USER));
         user.setCurrency(Currency.builder().id(1).currencyType(CurrencyType.USD).build());
         log.info("UsersService::registrUser - {}", user);
         return usersRepository.save(user);
+    }
+
+    public User getUserByEmail(String email){
+        return usersRepository.findOneByEmail(email);
+    }
+
+    public Integer getUserIdByEmail(String email){
+        return usersRepository.findOneByEmail(email).getId();
     }
 }

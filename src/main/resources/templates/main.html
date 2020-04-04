@@ -7,18 +7,72 @@
 <th:block th:insert="fragments/header :: header" />
 <div class="container">
     <span th:text="${message}"></span>
-
-    <span th:text="#{label.income}"></span>
     <div class="row">
-        <span th:text="#{label.allTime}"></span>
-        <span th:text="#{label.allTime}"></span>
+        <div class="col-md-3"><h3>[[#{label.choiseCurrency}]]</h3></div>
+        <div class="col-md-2">
+            <select id="currencySelect" class="nice-select custom-select custom-select-sm">
+                <option th:each="currency : ${user.getUserCurrencys()}" th:value="${currency}" th:text= "#{label.currency. + ${currency.currencyType}}"
+                ></option>
+            </select>
+        </div>
     </div>
-
-    <th:block th:each="transaction : ${transactions}">
-        <tr>
-            <td th:text="${transaction.date}">...</td>
-        </tr>
-    </th:block>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"><h3>[[#{label.expenses}]]</h3></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>[[#{label.today}]]</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>[[#{label.week}]]</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>[[#{label.mounth}]]</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"><h3>[[#{label.income}]]</h3></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>[[#{label.today}]]</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>[[#{label.week}]]</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>[[#{label.mounth}]]</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"><h3>[[#{label.balance}]]</h3></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>USD</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>EUR</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h6>RUB</h6></div>
+                <div class="col-md-2"><h6>~~~~</h6></div>
+            </div>
+        </div>
+    </div>
 </div>
 <th:block th:insert="fragments/general :: footer"/>
 </body>

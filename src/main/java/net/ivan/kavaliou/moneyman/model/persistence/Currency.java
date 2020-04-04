@@ -18,13 +18,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class Currency{
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
     private Integer id;
-
-    @Column(name = "name", nullable = false)
-    @NotBlank
-    @Size(min = 2, max = 100)
-    private String name;
 
     @Column(name = "code", nullable = false)
     @NotBlank

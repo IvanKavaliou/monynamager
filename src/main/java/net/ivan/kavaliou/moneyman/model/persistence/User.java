@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
+import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
 import net.ivan.kavaliou.moneyman.utils.enums.UserRoles;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,7 +25,7 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User{
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
     private Integer id;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -53,5 +54,13 @@ public class User{
     @ElementCollection(targetClass = UserRoles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "id_users"))
     @Enumerated(EnumType.STRING)
-    private Set<UserRoles> role;
+    private Set<UserRoles> roles;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "users_currency",
+            joinColumns = { @JoinColumn(name = "id_users") },
+            inverseJoinColumns = { @JoinColumn(name = "id_currency") }
+    )
+    private Set<Currency> userCurrencys;
 }
