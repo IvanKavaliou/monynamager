@@ -25,16 +25,18 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User{
     @Id
-    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     private Integer id;
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
-    @NotBlank
+    @NotBlank (message = "error.notBlank")
     @Size(max = 100)
     private String email;
+
     @Column(name = "password", nullable = false)
-    @NotBlank
+    @NotBlank (message = "error.notBlank")
     @Size(min = 4, max = 100)
     private String password;
 
@@ -56,7 +58,7 @@ public class User{
     @Enumerated(EnumType.STRING)
     private Set<UserRoles> roles;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
             name = "users_currency",
             joinColumns = { @JoinColumn(name = "id_users") },

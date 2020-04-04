@@ -18,12 +18,13 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class Currency{
     @Id
-    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     private Integer id;
 
     @Column(name = "code", nullable = false)
-    @NotBlank
     @Size(min = 3, max = 3)
+    @NotBlank
     @Enumerated(EnumType.STRING)
     private CurrencyType currencyType;
 }
