@@ -5,71 +5,122 @@
 </head>
 <body>
 <th:block th:insert="fragments/header :: header" />
-<div class="container">
-    <span th:text="${message}"></span>
-    <div class="row">
-        <div class="col-md-3"><h3>[[#{label.choiseCurrency}]]</h3></div>
-        <div class="col-md-2">
-            <select id="currencySelect" class="nice-select custom-select custom-select-sm">
-                <option th:each="currency : ${user.getUserCurrencys()}" th:value="${currency}" th:text= "#{label.currency. + ${currency.currencyType}}"
-                ></option>
-            </select>
+<div class="row justify-content-center">
+    <div class="col col-md-3">
+        <div class="container">
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h6>[[#{label.choiseCurrency}]]</h6>
+                        </div>
+                        <div class="col-5">
+                            <select id="currencySelect" class="nice-select custom-select custom-select-sm">
+                                <option th:each="currency : ${user.getUserCurrencys()}" th:value="${currency}" th:text= "#{label.currency. + ${currency.currencyType}}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div><h3>[[#{label.expenses}]]</h3></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>[[#{label.today}]]</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>[[#{label.week}]]</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>[[#{label.mounth}]]</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div><h3>[[#{label.income}]]</h3></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>[[#{label.today}]]</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>[[#{label.week}]]</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>[[#{label.mounth}]]</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div><h3>[[#{label.balance}]]</h3></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>USD</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>EUR</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><h6>RUB</h6></div>
+                        <div class="col"><h6>~~~~</h6></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div>
+    <div class="col-sm-auto">
         <div class="container">
-            <div class="row">
-                <div class="col-md-2"><h3>[[#{label.expenses}]]</h3></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>[[#{label.today}]]</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>[[#{label.week}]]</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>[[#{label.mounth}]]</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2"><h3>[[#{label.income}]]</h3></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>[[#{label.today}]]</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>[[#{label.week}]]</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>[[#{label.mounth}]]</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2"><h3>[[#{label.balance}]]</h3></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>USD</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>EUR</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"><h6>RUB</h6></div>
-                <div class="col-md-2"><h6>~~~~</h6></div>
+            <div>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link active" href="#tab-1">[[#{label.last}]]</a></li>
+                    <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link" href="#tab-2">[[#{label.expenses}]]</a></li>
+                    <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link" href="#tab-3">[[#{label.income}]]</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tab-1">
+                        <table id="example" class="table table-bordered table-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>[[#{label.date}]]</th>
+                                <th>[[#{label.description}]]</th>
+                                <th>[[#{label.value}]]</th>
+                                <th>[[#{label.currency}]]</th>
+                                <th>[[#{label.category}]]</th>
+                                <th>[[#{label.type}]]</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>[[#{label.date}]]</th>
+                                <th>[[#{label.description}]]</th>
+                                <th>[[#{label.value}]]</th>
+                                <th>[[#{label.currency}]]</th>
+                                <th>[[#{label.category}]]</th>
+                                <th>[[#{label.type}]]</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab-2">
+                        <p>Content for tab 2.</p>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab-3">
+                        <p>Content for tab 3.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
