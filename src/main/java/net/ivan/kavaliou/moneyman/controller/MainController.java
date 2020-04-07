@@ -27,12 +27,10 @@ public class MainController {
     @Autowired
     Environment env;
 
-    private User user;
-
     @GetMapping("/main")
     public String main(Authentication auth, Model model) {
         log.info("MainController::main");
-        user = usersService.getUserByEmail(auth.getName());
+        User user = usersService.getAuthUser();
         model.addAttribute("message", env.getProperty("welcome.message"));
         model.addAttribute("user", user);
         model.addAttribute("transactions", transactionService.getAllByUserId(user.getId()));

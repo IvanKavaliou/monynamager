@@ -1,5 +1,6 @@
 package net.ivan.kavaliou.moneyman.model.persistence;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +48,7 @@ public class Transaction  {
     private TransactionCategory transactionCategory;
 
     @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
 
     @Column(name = "name", nullable = false)

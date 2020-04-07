@@ -9,16 +9,17 @@
     <link rel="stylesheet" th:href="@{styles/css/styles.css}">
     <link rel="stylesheet" th:href="@{styles/css/Footer-Basic.css}">
     <link rel="stylesheet" th:href="@{styles/css/Navigation-Clean.css}">
-    <script th:src="@{/jquery/jquery.min.js}"></script>
-    <script th:src="@{/popper/popper.min.js}"></script>
+    <link rel="stylesheet" th:href="@{styles/css/jquery.dataTables.min.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/datatables.min.js}"></script>
+    <script th:src="@{styles/bootstrap/js/bootstrap.min.js}"></script>
 </th:block>
 
 
 
 <th:block th:fragment="footer">
     <th:block th:insert="fragments/footer :: footer"/>
-    <script th:src="@{js/jquery.min.js}"></script>
-    <script th:src="@{bootstrap/js/bootstrap.min.js}"></script>
 </th:block>
 
 

@@ -1,10 +1,9 @@
 package net.ivan.kavaliou.moneyman.model.persistence;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
-import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
 import net.ivan.kavaliou.moneyman.utils.enums.UserRoles;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,7 +13,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 

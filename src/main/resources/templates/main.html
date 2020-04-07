@@ -91,7 +91,7 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tab-1">
-                        <table id="example" class="table table-bordered table-responsive" style="width: 100%">
+                        <table id="lastTable" class="display" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>[[#{label.date}]]</th>
@@ -102,16 +102,6 @@
                                 <th>[[#{label.type}]]</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>[[#{label.date}]]</th>
-                                <th>[[#{label.description}]]</th>
-                                <th>[[#{label.value}]]</th>
-                                <th>[[#{label.currency}]]</th>
-                                <th>[[#{label.category}]]</th>
-                                <th>[[#{label.type}]]</th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab-2">
@@ -125,6 +115,29 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready( function () {
+        var table = $('#lastTable').DataTable({
+            language: {
+                url: "/dt_i18n/[[${#locale}]].lang"
+            },
+            "sAjaxSource": "/trnsactions",
+            "sAjaxDataProp": "",
+            "order": [ [ 0, "asc" ] ],
+            "aoColumns": [
+                { "data": "date"},
+                { "data": "name" },
+                { "data": "value" },
+                { "data": "currency.currencyType"},
+                { "data": "transactionCategory.name"},
+                { "data": "transactionCategory.transactionType.transactionType"}
+            ]
+        })
+    });
+</script>
+
 <th:block th:insert="fragments/general :: footer"/>
 </body>
 </html>

@@ -13,5 +13,5 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
     @Query("SELECT t FROM transaction t WHERE t.user.id = :id_users")
-    public List<Transaction> getAllByIdUsers( @Param("id_users")Integer id_users);
+    public List<Transaction> getAllByIdUsers(@Param("id_users")Integer id_users);
 }

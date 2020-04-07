@@ -28,13 +28,13 @@ public class TransactionCategory {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_users", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_transaction_type", nullable = false)
+    @JoinColumn(name = "id_transaction_types", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private TransactionTypes transactionType;

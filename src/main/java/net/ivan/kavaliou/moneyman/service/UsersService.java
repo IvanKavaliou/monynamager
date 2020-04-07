@@ -8,12 +8,11 @@ import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import net.ivan.kavaliou.moneyman.utils.enums.UserRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
-
-
 import java.util.Collections;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -24,6 +23,7 @@ public class UsersService {
 
     @Autowired
     UsersRepository usersRepository;
+
 
     public User registerUser(User user, ModelMap model){
         log.info("UsersService::registrUser - {}", user);
@@ -46,5 +46,10 @@ public class UsersService {
 
     public Integer getUserIdByEmail(String email){
         return usersRepository.findOneByEmail(email).getId();
+    }
+
+    public User getAuthUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+       return getUserByEmail(authentication.getName());
     }
 }
