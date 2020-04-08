@@ -1,8 +1,10 @@
 package net.ivan.kavaliou.moneyman.model.persistence;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.ivan.kavaliou.moneyman.utils.serializer.TransactionTypeSerializer;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

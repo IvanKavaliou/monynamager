@@ -20,10 +20,6 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
 
-
-    @Autowired
-    Environment env;
-
     @Autowired
     UsersService usersService;
 

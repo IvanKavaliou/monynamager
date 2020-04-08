@@ -1,10 +1,12 @@
 package net.ivan.kavaliou.moneyman.model.persistence;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
+import net.ivan.kavaliou.moneyman.utils.serializer.TransactionTypeSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -26,5 +28,6 @@ public class TransactionTypes {
     @NotBlank
     @Size(min = 1, max = 10)
     @Enumerated(EnumType.STRING)
+    @JsonSerialize(using = TransactionTypeSerializer.class)
     private TransactionType transactionType;
 }

@@ -48,7 +48,7 @@ public class Transaction  {
     private TransactionCategory transactionCategory;
 
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime date;
 
     @Column(name = "name", nullable = false)
