@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.model.persistence.User;
+import net.ivan.kavaliou.moneyman.service.TransactionCategoryService;
 import net.ivan.kavaliou.moneyman.service.TransactionService;
 import net.ivan.kavaliou.moneyman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
@@ -19,10 +18,13 @@ public class MainController {
     private static final String MAIN_VIEW = "main";
 
     @Autowired
-    TransactionService transactionService;
+    TransactionService tService;
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    TransactionCategoryService tCategoryService;
 
     @Autowired
     Environment env;
@@ -33,7 +35,8 @@ public class MainController {
         User user = usersService.getAuthUser();
         model.addAttribute("message", env.getProperty("welcome.message"));
         model.addAttribute("user", user);
-        model.addAttribute("transactions", transactionService.getAllByUserId(user.getId()));
+        model.addAttribute("transactions", tService.getAll());
+        //model.addAttribute("expensesCategorys", tCategoryService.getExpensesCategorys(user.getId()));
         return MAIN_VIEW; //view
     }
 }

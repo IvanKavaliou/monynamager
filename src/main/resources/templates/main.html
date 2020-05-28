@@ -22,20 +22,21 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="mt-2">
                 <div class="container">
                     <div class="row">
-                        <div><h3>[[#{label.expenses}]]</h3></div>
+                        <div class="col"><h3>[[#{label.expenses}]]</h3></div>
+                        <div class="col"><button type="button" data-id="EXPESES" class="btn btn-light btn-sm open-AddDialog" data-toggle="modal" data-target="#addModal">+</button></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>[[#{label.today}]]</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>[[#{label.week}]]</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>[[#{label.mounth}]]</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
@@ -44,17 +45,18 @@
             <div>
                 <div class="container">
                     <div class="row">
-                        <div><h3>[[#{label.income}]]</h3></div>
+                        <div class="col"><h3>[[#{label.income}]]</h3></div>
+                        <div class="col"><button type="button" data-id="INCOME" class="btn btn-light btn-sm open-AddDialog" data-toggle="modal" data-target="#addModal">+</button></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>[[#{label.today}]]</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>[[#{label.week}]]</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>[[#{label.mounth}]]</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
@@ -63,17 +65,17 @@
             <div>
                 <div class="container">
                     <div class="row">
-                        <div><h3>[[#{label.balance}]]</h3></div>
+                        <div class="col"><h3>[[#{label.balance}]]</h3></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>USD</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>EUR</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
-                    <div class="row">
+                    <div class="row ml-1">
                         <div class="col"><h6>RUB</h6></div>
                         <div class="col"><h6>~~~~</h6></div>
                     </div>
@@ -105,10 +107,32 @@
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab-2">
-                        <p>Content for tab 2.</p>
+                        <table id="expensesTable" class="display" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>[[#{label.date}]]</th>
+                                <th>[[#{label.description}]]</th>
+                                <th>[[#{label.value}]]</th>
+                                <th>[[#{label.currency}]]</th>
+                                <th>[[#{label.category}]]</th>
+                                <th>[[#{label.type}]]</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab-3">
-                        <p>Content for tab 3.</p>
+                        <table id="incomeTable" class="display" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>[[#{label.date}]]</th>
+                                <th>[[#{label.description}]]</th>
+                                <th>[[#{label.value}]]</th>
+                                <th>[[#{label.currency}]]</th>
+                                <th>[[#{label.category}]]</th>
+                                <th>[[#{label.type}]]</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -117,7 +141,63 @@
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="login-clean">
+                    <form th:action="@{/registration}" method="post">
+                        <div class="form-group">
+                            <h6>[[#{label.description}]]</h6>
+                            <input type="email" class="form-control" th:classappend="${descriptionError}? 'is-invalid'" name="description" th:placeholder="#{label.email}" />
+                            <div th:if="${descriptionError}" class="invalid-feedback">[[#{${descriptionError}}]]</div>
+                        </div>
+                        <div class="form-group">
+                            <h6>[[#{label.currency}]]</h6>
+                            <select id="currencySelectAdd" class="nice-select custom-select custom-select-sm">
+                                <option th:each="currency : ${user.getUserCurrencys()}" th:value="${currency}" th:text= "#{label.currency. + ${currency.currencyType}}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <h6>[[#{label.value}]]</h6>
+                            <input type="number" class="form-control" th:classappend="${valueError}? 'is-invalid'" name="value" th:placeholder="#{label.email}" />
+                            <div th:if="${valueError}" class="invalid-feedback">[[#{${valueError}}]]</div>
+                        </div>
+                        <div class="form-group">
+                            <h6>[[#{label.currency}]]</h6>
+                            <select id="categorys" class="nice-select custom-select custom-select-sm">
+                                <option th:each="category : ${expensesCategorys}" th:value="${category}" th:text= "${category.getName()}"></option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
+
+    $(document).on("click", ".open-AddDialog", function () {
+        var myId = $(this).data('id');
+      //  $(".modal-body #bookId").val( myBookId );
+        // As pointed out in comments,
+        // it is unnecessary to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    });
+
     $(document).ready( function () {
         var table = $('#lastTable').DataTable({
             language: {
@@ -136,6 +216,45 @@
             ]
         })
     });
+
+    $(document).ready( function () {
+        var table = $('#incomeTable').DataTable({
+            language: {
+                url: "/dt_i18n/[[${#locale}]].lang"
+            },
+            "sAjaxSource": "/trnsactions/income",
+            "sAjaxDataProp": "",
+            "order": [ [ 0, "asc" ] ],
+            "aoColumns": [
+                { "data": "date"},
+                { "data": "name" },
+                { "data": "value" },
+                { "data": "currency.currencyType"},
+                { "data": "transactionCategory.name"},
+                { "data": "transactionCategory.transactionType.transactionType"}
+            ]
+        })
+    });
+
+    $(document).ready( function () {
+        var table = $('#expensesTable').DataTable({
+            language: {
+                url: "/dt_i18n/[[${#locale}]].lang"
+            },
+            "sAjaxSource": "/trnsactions/expenses",
+            "sAjaxDataProp": "",
+            "order": [ [ 0, "asc" ] ],
+            "aoColumns": [
+                { "data": "date"},
+                { "data": "name" },
+                { "data": "value" },
+                { "data": "currency.currencyType"},
+                { "data": "transactionCategory.name"},
+                { "data": "transactionCategory.transactionType.transactionType"}
+            ]
+        })
+    });
+
 </script>
 
 <th:block th:insert="fragments/general :: footer"/>

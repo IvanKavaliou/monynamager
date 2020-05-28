@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.service;
 
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.repository.CurrencyRepository;
+import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,9 @@ public class CurrencyService {
 
     public List<Currency> getAllCurrency(){
         return currencyRepository.findAll();
+    }
+
+    public Currency get(CurrencyType type){
+        return currencyRepository.findByCurrencyType(type);
     }
 }

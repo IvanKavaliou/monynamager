@@ -3,6 +3,7 @@ package net.ivan.kavaliou.moneyman.model.persistence;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.ivan.kavaliou.moneyman.utils.serializer.TransactionTypeSerializer;
 import org.hibernate.annotations.OnDelete;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 @Table(name = "transaction_category")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class TransactionCategory {
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
