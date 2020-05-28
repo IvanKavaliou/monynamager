@@ -15,9 +15,21 @@ public class TransactionCategoryService {
     private TransactionCategoryRepository repository;
 
     @Autowired
-    private TransactionTypesService tTypesService;
+    UsersService usersService;
 
-   /* public List<TransactionCategory> getExpensesCategorys(Integer userId){
-        return repository.findByIdTransactionTypesAndIdUsers(tTypesService.get(TransactionType.EXPENSES).getId(), userId);
-    }*/
+    @Autowired
+    TransactionTypesService transactionTypesService;
+
+    public List<TransactionCategory> getExpenses(){
+        return repository.findByUserAndAndTransactionType(usersService.getAuthUser(), transactionTypesService.getExpenses());
+    }
+
+    public List<TransactionCategory> getIncomes(){
+        return repository.findByUserAndAndTransactionType(usersService.getAuthUser(), transactionTypesService.getIncome());
+    }
+
+    public TransactionCategory add(TransactionCategory transactionCategory){
+        transactionCategory.setUser(usersService.getAuthUser());
+        return repository.save(transactionCategory);
+    }
 }

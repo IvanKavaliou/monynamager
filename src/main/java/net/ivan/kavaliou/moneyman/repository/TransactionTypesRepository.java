@@ -10,8 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionTypesRepository extends JpaRepository<TransactionTypes, Integer> {
 
-    /*@Query("SELECT tt FROM transaction_types tt WHERE tt.code = :code")
-    public TransactionTypes get(@Param("code")String code);*/
-
     public TransactionTypes findByTransactionType(TransactionType type);
 }
