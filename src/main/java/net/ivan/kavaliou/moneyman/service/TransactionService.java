@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +23,10 @@ public class TransactionService {
 
     @Autowired
     UsersService usersService;
+
+    public Optional<Transaction> get(Integer id){
+        return repository.findByUserAndId(usersService.getAuthUser(),id);
+    }
 
     public List<Transaction> getAll(){
         return getAll(DateTimeUtils.MIN_DATE, DateTimeUtils.MAX_DATE);
@@ -70,8 +75,21 @@ public class TransactionService {
     }
 
     public Transaction add(Transaction transaction){
-        transaction.setUser(usersService.getAuthUser());
         transaction.setDate(LocalDateTime.now());
+        return update(transaction);
+    }
+
+    public boolean delete(Integer id){
+        Optional<Transaction> transaction = get(id);
+        if (transaction.isPresent()){
+            repository.delete(transaction.get());
+            return true;
+        }
+        return false;
+    }
+
+    public Transaction update(Transaction transaction){
+        transaction.setUser(usersService.getAuthUser());
         return repository.save(transaction);
     }
 }

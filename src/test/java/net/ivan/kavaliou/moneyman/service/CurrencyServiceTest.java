@@ -24,8 +24,8 @@ public class CurrencyServiceTest {
 
     @Test
     public void getByTypeTest(){
-        Currency usd = currencyService.get(CurrencyType.USD);
-        Currency rub = currencyService.get(CurrencyType.RUB);
+        Currency usd = currencyService.get(CurrencyType.USD).get();
+        Currency rub = currencyService.get(CurrencyType.RUB).get();
         assertTrue(usd.getCurrencyType() == CurrencyType.USD);
         assertTrue(rub.getCurrencyType() == CurrencyType.RUB);
     }

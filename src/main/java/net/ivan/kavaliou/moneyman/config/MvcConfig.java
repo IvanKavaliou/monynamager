@@ -1,10 +1,14 @@
 package net.ivan.kavaliou.moneyman.config;
 
+import net.ivan.kavaliou.moneyman.utils.enums.CaseInsensitiveEnumEditor;
+import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

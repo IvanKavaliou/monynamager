@@ -39,7 +39,6 @@ public class Transaction  {
     private Currency currency;
 
     @NotNull
-    @NotBlank
     private BigDecimal value;
 
     @ManyToOne(fetch = FetchType.LAZY)

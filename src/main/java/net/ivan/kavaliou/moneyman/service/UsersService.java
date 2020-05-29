@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import java.util.Collections;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,6 +25,33 @@ public class UsersService {
     @Autowired
     UsersRepository usersRepository;
 
+    @Autowired
+    CurrencyService currencyService;
+
+    public Optional<Currency> addCurrency(CurrencyType currencyType){
+        User user = getAuthUser();
+        Optional<Currency> currency = currencyService.get(currencyType);
+        if (currency.isPresent()){
+            if(!user.getUserCurrencys().contains(currency.get())){
+                user.getUserCurrencys().add(currency.get());
+                usersRepository.save(user);
+            }
+        }
+        return currency;
+    }
+
+    public boolean deleteCurrency(CurrencyType currencyType){
+        User user = getAuthUser();
+        Optional<Currency> currency = currencyService.get(currencyType);
+        if (currency.isPresent()){
+            if(user.getUserCurrencys().contains(currency.get())){
+                user.getUserCurrencys().remove(currency.get());
+                usersRepository.save(user);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public User registerUser(User user, ModelMap model){
         log.info("UsersService::registrUser - {}", user);
@@ -46,6 +74,10 @@ public class UsersService {
 
     public Integer getUserIdByEmail(String email){
         return usersRepository.findOneByEmail(email).getId();
+    }
+
+    public User update(User user){
+        return usersRepository.save(user);
     }
 
     public User getAuthUser(){

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
@@ -19,4 +20,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     public List<Transaction> getAllByIdUsers(@Param("id_users")Integer id_users);
 
     public List<Transaction> findByUserAndDateBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
+
+    public Optional<Transaction> findByUserAndId(User user, Integer id);
 }
