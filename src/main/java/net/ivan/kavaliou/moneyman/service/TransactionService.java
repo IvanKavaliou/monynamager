@@ -8,6 +8,7 @@ import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
@@ -72,6 +73,19 @@ public class TransactionService {
 
     public BigDecimal getExpensesWeeklyAmount(CurrencyType currency){
         return getAmount(TransactionType.EXPENSES, currency,LocalDateTime.now().with(LocalTime.MIDNIGHT).minusDays(7) ,LocalDateTime.now().with(LocalTime.MIDNIGHT));
+    }
+
+    public BigDecimal getIncomeMonthAmount(CurrencyType currency){
+        LocalDateTime.now().getMonth().maxLength();
+        return getAmount(TransactionType.INCOME, currency,
+                            DateTimeUtils.getStartOfMount(),
+                            DateTimeUtils.getEndOfMount());
+    }
+
+    public BigDecimal getExpensesMonthAmount(CurrencyType currency){
+        return getAmount(TransactionType.EXPENSES, currency,
+                DateTimeUtils.getStartOfMount(),
+                DateTimeUtils.getEndOfMount());
     }
 
     public Transaction add(Transaction transaction){

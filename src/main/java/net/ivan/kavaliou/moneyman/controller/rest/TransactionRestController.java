@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
+import net.ivan.kavaliou.moneyman.forms.AmountForm;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.Transaction;
 import net.ivan.kavaliou.moneyman.service.CurrencyService;
@@ -16,6 +17,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +52,49 @@ public class TransactionRestController {
         return transactionService.getAllExpenses();
     }
 
+    @RequestMapping(path="/amount/{type}/{currency}", method= RequestMethod.GET)
+    public AmountForm getAmount(@PathVariable TransactionType type, @PathVariable CurrencyType currency){
+        AmountForm result = AmountForm.builder().build();
+        Optional<Currency> cur = currencyService.get(currency);
+        if (cur.isPresent()) {
+            if (usersService.getAuthUser().getUserCurrencys().contains(currencyService.get(currency).get())) {
+                if (type.equals(TransactionType.INCOME)) {
+                    return AmountForm.builder()
+                            .day("0")
+                            .week(transactionService.getIncomeWeeklyAmount(currency).toString())
+                            .month(transactionService.getIncomeMonthAmount(currency).toString())
+                            .balance(calculatealance(currency).toString())
+                            .build();
+                }
+
+                if (type.equals(TransactionType.EXPENSES)) {
+                   return AmountForm.builder()
+                            .day("0")
+                            .week(transactionService.getExpensesWeeklyAmount(currency).toString())
+                            .month(transactionService.getExpensesMonthAmount(currency).toString())
+                            .balance(calculatealance(currency).toString())
+                            .build();
+                }
+            }
+        }
+        throw new NotFoundException();
+    }
+
+    @RequestMapping(path="/amount/balance/{currency}", method= RequestMethod.GET)
+    public String getBalance(@PathVariable CurrencyType currency){
+        Optional<Currency> cur = currencyService.get(currency);
+        if (cur.isPresent()) {
+            if (usersService.getAuthUser().getUserCurrencys().contains(currencyService.get(currency).get())) {
+                return calculatealance(currency).toString();
+            }
+        }
+        throw new NotFoundException();
+    }
+
+    private BigDecimal calculatealance(CurrencyType currency){
+        return transactionService.getIncomeAmount(currency).subtract(transactionService.getExpensesAmount(currency));
+    }
+
     @RequestMapping(path="/amount/{amount}/{type}/{currency}", method= RequestMethod.GET)
     public String getAmount(@PathVariable AmountType amount,@PathVariable TransactionType type, @PathVariable CurrencyType currency){
         Optional<Currency> cur = currencyService.get(currency);
@@ -62,6 +107,10 @@ public class TransactionRestController {
                     if (amount.equals(AmountType.WEEK)){
                         return transactionService.getIncomeWeeklyAmount(currency).toString();
                     }
+
+                    if (amount.equals(AmountType.MONTH)){
+                        return transactionService.getIncomeMonthAmount(currency).toString();
+                    }
                 }
                 if (type.equals(TransactionType.EXPENSES)){
                     if (amount.equals(AmountType.FULL)){
@@ -69,6 +118,10 @@ public class TransactionRestController {
                     }
                     if (amount.equals(AmountType.WEEK)){
                         return transactionService.getExpensesWeeklyAmount(currency).toString();
+                    }
+
+                    if (amount.equals(AmountType.MONTH)){
+                        return transactionService.getExpensesMonthAmount(currency).toString();
                     }
                 }
             }
