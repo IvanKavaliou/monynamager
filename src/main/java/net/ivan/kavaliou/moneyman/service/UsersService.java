@@ -68,6 +68,10 @@ public class UsersService {
         return usersRepository.save(user);
     }
 
+    public Optional<User> findByEmail(String email){
+        return usersRepository.findByEmail(email);
+    }
+
     public User getUserByEmail(String email){
         return usersRepository.findOneByEmail(email);
     }
@@ -76,7 +80,7 @@ public class UsersService {
         return usersRepository.findOneByEmail(email).getId();
     }
 
-    public User update(User user){
+    public User save(User user){
         return usersRepository.save(user);
     }
 

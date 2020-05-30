@@ -56,7 +56,7 @@ class UsersServiceTest {
         Currency currency_before = user.getCurrency();
         assertEquals(currency_before.getId(), currencyService.get(CurrencyType.USD).get().getId());
         user.setCurrency(currencyService.get(CurrencyType.EUR).get());
-        service.update(user);
+        service.save(user);
         assertEquals(service.getAuthUser().getCurrency().getId(), currencyService.get(CurrencyType.EUR).get().getId());
     }
 

@@ -19,6 +19,9 @@
             <div th:if="${param.logout}">
                 <p class="text-center flex-grow-0" style="font-size: 12px;color: rgb(255,0,0);">[[#{message.logout}]]</p>
             </div>
+            <div th:if="${(param.reg != null) and (param.reg[0] == 'true')}">
+                <p class="text-center flex-grow-0" style="font-size: 12px;color: green;">[[#{message.registred}]]</p>
+            </div>
             <a class="forgot" href="#">Forgot your email or password?</a></form>
     </div>
 </div>
