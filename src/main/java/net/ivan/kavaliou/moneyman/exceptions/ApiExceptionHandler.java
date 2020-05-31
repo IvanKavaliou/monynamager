@@ -15,4 +15,10 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(e.getMessage(), HttpStatus.NOT_FOUND, LocalDateTime.now());
         return new ResponseEntity<>(apiException, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {ServiceException.class})
+    public ResponseEntity<Object> handleServiceException(ServiceException e){
+        ApiException apiException = new ApiException(e.getMessage(), HttpStatus.FORBIDDEN, LocalDateTime.now());
+        return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
+    }
 }

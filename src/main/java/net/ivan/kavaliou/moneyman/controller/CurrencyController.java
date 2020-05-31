@@ -25,15 +25,4 @@ public class CurrencyController {
         binder.registerCustomEditor(CurrencyType.class, new CaseInsensitiveEnumEditor(CurrencyType.class));
     }
 
-    @GetMapping(path="/currency/delete/{currency}")
-    public String deleteCurrency(@PathVariable CurrencyType currency, Model model){
-        log.debug("CurrencyController::deleteCurrency {}"+currency);
-        String error = new String();
-        if(usersService.deleteCurrency(currency)){
-            return "redirect:/main";
-        }
-        log.debug("CurrencyController::deleteCurrency error {}"+error);
-        model.addAttribute("error", error);
-        return "redirect:/main?deleteCurrencyError=true";
-    }
 }

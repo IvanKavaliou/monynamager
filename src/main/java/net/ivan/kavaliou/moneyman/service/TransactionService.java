@@ -1,8 +1,11 @@
 package net.ivan.kavaliou.moneyman.service;
 
+import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
+import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.Transaction;
 import net.ivan.kavaliou.moneyman.repository.TransactionRepository;
 import net.ivan.kavaliou.moneyman.utils.DateTimeUtils;
+import net.ivan.kavaliou.moneyman.utils.Messages;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,12 @@ public class TransactionService {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    CurrencyService currencyService;
+
+    @Autowired
+    Messages messages;
+
     public Optional<Transaction> get(Integer id){
         return repository.findByUserAndId(usersService.getAuthUser(),id);
     }
@@ -35,6 +45,17 @@ public class TransactionService {
 
     public List<Transaction> getAll(LocalDateTime startDate, LocalDateTime endDate){
         return repository.findByUserAndDateBetween(usersService.getAuthUser(), startDate, endDate);
+    }
+
+    public List<Transaction> getAllByCurrency(CurrencyType currency){
+        List<Transaction> result = new ArrayList<>();
+        Optional<Currency> cur = currencyService.get(currency);
+        if (cur.isPresent()){
+            result =  repository.findByUserAndCurrency(usersService.getAuthUser(), cur.get());
+        } else {
+            throw new NotFoundException(messages.get("error.currency.notExisit"));
+        }
+        return result;
     }
 
     private List<Transaction> getAllByType(TransactionType type, LocalDateTime start, LocalDateTime end) {

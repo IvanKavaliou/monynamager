@@ -20,7 +20,7 @@
                             </select>
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn-light btn-sm">+</button>
+                            <button type="button"  id="currencyAdd" class="btn btn-light btn-sm" data-toggle="modal" data-target="#addCurrencyModal">+</button>
                         </div>
                         <div class="col-1">
                             <button type="button" id="currencyDelete" class="btn btn-light btn-sm"  data-toggle="modal" data-target="#deleteCurrencyModal">-</button>
@@ -29,7 +29,7 @@
                     <div class="row">
                         <div id="currencyMessageAlert" class="alert alert-primary alert-dismissible collapse" role="alert">
                             <div id="currencyMessage"></div>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close"  data-hide="alert"><span aria-hidden="true">&times;</span></button>
                         </div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
     </div>
 </div>
 
-<!-- DELETE CURRENCY MODAL-->
+<!-- DELETE CURRENCY MODAL #####START##### -->
 <div class="modal fade" id="deleteCurrencyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -161,6 +161,31 @@
         </div>
     </div>
 </div>
+<!-- DELETE CURRENCY MODAL #####END##### -->
+<!-- ADD CURRENCY MODAL #####START##### -->
+<div class="modal fade" id="addCurrencyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCurrencyModalTitle">[[#{currency.add.title}]]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>[[#{currency.add.message}]]</p>
+                <select id="currencyAddSelect" class="nice-select custom-select custom-select-sm">
+                    <option th:each="currency : ${allCurrencys}" th:value="${currency.currencyType}" th:text= "#{label.currency. + ${currency.currencyType}}"></option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{button.close}]]</button>
+                <button type="button" id="currencyAddSubmit" class="btn btn-primary">[[#{button.add}]]</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD CURRENCY MODAL  #####END##### -->
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -211,12 +236,10 @@
 
 <script>
 
-    $(document).on("click", ".open-AddDialog", function () {
-        var myId = $(this).data('id');
-      //  $(".modal-body #bookId").val( myBookId );
-        // As pointed out in comments,
-        // it is unnecessary to have to manually call the modal.
-        // $('#addBookDialog').modal('show');
+    $(function(){
+        $("[data-hide]").on("click", function(){
+            $(this).closest("." + $(this).attr("data-hide")).hide();
+        });
     });
 
     $('#currencySelect').change(function() {
@@ -225,7 +248,7 @@
 
     function upAmounts(currency){
         $.ajax({
-            url: "http://localhost:8080/rest/amount/INCOME/" + currency
+            url: "rest/amount/INCOME/" + currency
         }).then(function(data) {
             $('#income_day').html(data.day);
             $('#income_week').html(data.week);
@@ -234,7 +257,7 @@
         });
 
         $.ajax({
-            url: "http://localhost:8080/rest/amount/EXPENSES/" + currency
+            url: "rest/amount/EXPENSES/" + currency
         }).then(function(data) {
             $('#expenses_day').html(data.day);
             $('#expenses_week').html(data.week);
@@ -303,13 +326,29 @@
 
         $("#currencyDeleteSubmit").click(function(){
             $.ajax({
-                url: '/currency/delete/' + $('#currencySelect').val(),
+                url: 'rest/currency/delete/' + $('#currencySelect').val(),
                 type: 'GET',
                 success: function(result) {
-                    $('#deleteCurrencyModal').modal('toggle');
+                    window.location.replace("/main");
                 },
                 error: function (result) {
                     $('#deleteCurrencyModal').modal('toggle');
+                    $("#currencyMessageAlert").show();
+                    $("#currencyMessage").html(result.responseJSON.message);
+                }
+            });
+        });
+
+
+        $("#currencyAddSubmit").click(function(){
+            $.ajax({
+                url: 'rest/currency/add/' + $('#currencyAddSelect').val(),
+                type: 'GET',
+                success: function(result) {
+                    window.location.replace("/main");
+                },
+                error: function (result) {
+                    $('#addCurrencyModal').modal('toggle');
                     $("#currencyMessageAlert").show();
                     $("#currencyMessage").html(result.responseJSON.message);
                 }

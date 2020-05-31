@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.service;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
+import net.ivan.kavaliou.moneyman.exceptions.ServiceException;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.User;
 import net.ivan.kavaliou.moneyman.repository.UsersRepository;
@@ -31,7 +32,10 @@ public class UsersService {
     @Autowired
     CurrencyService currencyService;
 
-    public Optional<Currency> addCurrency(CurrencyType currencyType){
+    @Autowired
+    TransactionService transactionService;
+
+    public Currency addCurrency(CurrencyType currencyType){
         User user = getAuthUser();
         Optional<Currency> currency = currencyService.get(currencyType);
         if (currency.isPresent()){
@@ -39,8 +43,10 @@ public class UsersService {
                 user.getUserCurrencys().add(currency.get());
                 usersRepository.save(user);
             }
+        } else {
+            throw new NotFoundException(messages.get("error.currency.notExisit"));
         }
-        return currency;
+        return currency.isPresent() ? currency.get() : new Currency();
     }
 
     public boolean deleteCurrency(CurrencyType currencyType){
@@ -49,9 +55,13 @@ public class UsersService {
         if (currency.isPresent()){
             if(user.getUserCurrencys().contains(currency.get())){
                 if (user.getUserCurrencys().size() > 1){
-                    user.getUserCurrencys().remove(currency.get());
-                    usersRepository.save(user);
-                    return true;
+                    if (transactionService.getAllByCurrency(currencyType).size() == 0){
+                        user.getUserCurrencys().remove(currency.get());
+                        usersRepository.save(user);
+                        return true;
+                    } else {
+                        throw new ServiceException(messages.get("error.currency.delete.transactions"));
+                    }
                 } else {
                     throw new NotFoundException(messages.get("error.currency.last"));
                 }

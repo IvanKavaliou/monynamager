@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.model.persistence.User;
+import net.ivan.kavaliou.moneyman.service.CurrencyService;
 import net.ivan.kavaliou.moneyman.service.TransactionCategoryService;
 import net.ivan.kavaliou.moneyman.service.TransactionService;
 import net.ivan.kavaliou.moneyman.service.UsersService;
@@ -27,13 +28,14 @@ public class MainController {
     TransactionCategoryService tCategoryService;
 
     @Autowired
-    Environment env;
+    CurrencyService currencyService;
 
     @GetMapping("/main")
     public String main(Authentication auth, Model model) {
         log.info("MainController::main");
         User user = usersService.getAuthUser();
         model.addAttribute("user", user);
+        model.addAttribute("allCurrencys", currencyService.getAllCurrency());
         return MAIN_VIEW; //view
     }
 }
