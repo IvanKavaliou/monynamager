@@ -33,10 +33,7 @@ public class MainController {
     public String main(Authentication auth, Model model) {
         log.info("MainController::main");
         User user = usersService.getAuthUser();
-        model.addAttribute("message", env.getProperty("welcome.message"));
         model.addAttribute("user", user);
-        model.addAttribute("transactions", tService.getAll());
-        //model.addAttribute("expensesCategorys", tCategoryService.getExpensesCategorys(user.getId()));
         return MAIN_VIEW; //view
     }
 }

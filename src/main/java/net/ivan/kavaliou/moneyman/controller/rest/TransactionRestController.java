@@ -13,7 +13,6 @@ import net.ivan.kavaliou.moneyman.utils.enums.CaseInsensitiveEnumEditor;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import net.ivan.kavaliou.moneyman.utils.enums.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +22,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@RequestMapping("/rest")
 public class TransactionRestController {
 
     @Autowired
@@ -34,25 +34,25 @@ public class TransactionRestController {
     @Autowired
     private CurrencyService currencyService;
 
-    @RequestMapping(path="/trnsactions", method= RequestMethod.GET)
+    @GetMapping("/trnsactions")
     public List<Transaction> getAllTransactions() {
         log.info("TransactionRestController::getAllTransactions {}", usersService.getAuthUser().getId());
         return transactionService.getAll();
     }
 
-    @RequestMapping(path="/trnsactions/income", method= RequestMethod.GET)
+    @GetMapping("/trnsactions/income")
     public List<Transaction> getAllIncome() {
         log.info("TransactionRestController::getAllIncome {}", usersService.getAuthUser().getId());
         return transactionService.getAllIncome();
     }
 
-    @RequestMapping(path="/trnsactions/expenses", method= RequestMethod.GET)
+    @GetMapping("/trnsactions/expenses")
     public List<Transaction> getAllExpenses() {
         log.info("TransactionRestController::getAllExpenses {}", usersService.getAuthUser().getId());
         return transactionService.getAllExpenses();
     }
 
-    @RequestMapping(path="/amount/{type}/{currency}", method= RequestMethod.GET)
+    @GetMapping("/amount/{type}/{currency}")
     public AmountForm getAmount(@PathVariable TransactionType type, @PathVariable CurrencyType currency){
         AmountForm result = AmountForm.builder().build();
         Optional<Currency> cur = currencyService.get(currency);
@@ -77,10 +77,10 @@ public class TransactionRestController {
                 }
             }
         }
-        throw new NotFoundException();
+        throw new NotFoundException("Customad asdasdasdasd NOt Found");
     }
 
-    @RequestMapping(path="/amount/balance/{currency}", method= RequestMethod.GET)
+    @GetMapping("/amount/balance/{currency}")
     public String getBalance(@PathVariable CurrencyType currency){
         Optional<Currency> cur = currencyService.get(currency);
         if (cur.isPresent()) {
@@ -88,14 +88,14 @@ public class TransactionRestController {
                 return calculatealance(currency).toString();
             }
         }
-        throw new NotFoundException();
+        throw new NotFoundException("Currency not found exception");
     }
 
     private BigDecimal calculatealance(CurrencyType currency){
         return transactionService.getIncomeAmount(currency).subtract(transactionService.getExpensesAmount(currency));
     }
 
-    @RequestMapping(path="/amount/{amount}/{type}/{currency}", method= RequestMethod.GET)
+    @GetMapping("/amount/{amount}/{type}/{currency}")
     public String getAmount(@PathVariable AmountType amount,@PathVariable TransactionType type, @PathVariable CurrencyType currency){
         Optional<Currency> cur = currencyService.get(currency);
         if (cur.isPresent()){
@@ -126,7 +126,7 @@ public class TransactionRestController {
                 }
             }
         }
-       throw new NotFoundException();
+       throw new NotFoundException("Not found ex");
     }
 
     @InitBinder

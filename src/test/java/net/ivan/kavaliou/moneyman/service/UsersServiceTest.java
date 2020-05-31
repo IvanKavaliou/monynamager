@@ -35,6 +35,7 @@ class UsersServiceTest {
     @WithMockUser("admin@admin.ru")
     public void deleteCurrencyTest(){
         int size_before = service.getAuthUser().getUserCurrencys().size();
+        String error = new String();
         service.deleteCurrency(CurrencyType.USD);
         int size_after = service.getAuthUser().getUserCurrencys().size();
         assertEquals(size_after, (size_before - 1));
@@ -44,6 +45,7 @@ class UsersServiceTest {
     @WithMockUser("admin@admin.ru")
     public void deleteNotExsisCurrencyTest(){
         int size_before = service.getAuthUser().getUserCurrencys().size();
+        String error = new String();
         assertFalse(service.deleteCurrency(CurrencyType.BYN));
         int size_after = service.getAuthUser().getUserCurrencys().size();
         assertEquals(size_after, size_before);

@@ -19,6 +19,18 @@
                                 <option th:each="currency : ${user.getUserCurrencys()}" th:value="${currency.currencyType}" th:text= "#{label.currency. + ${currency.currencyType}}"></option>
                             </select>
                         </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-light btn-sm">+</button>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" id="currencyDelete" class="btn btn-light btn-sm"  data-toggle="modal" data-target="#deleteCurrencyModal">-</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="currencyMessageAlert" class="alert alert-primary alert-dismissible collapse" role="alert">
+                            <div id="currencyMessage"></div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,6 +143,24 @@
     </div>
 </div>
 
+<!-- DELETE CURRENCY MODAL-->
+<div class="modal fade" id="deleteCurrencyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCurrencyModalTitle">[[#{currency.delete.title}]]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                [[#{currency.delete.message}]]
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{button.close}]]</button>
+                <button type="button" id="currencyDeleteSubmit" class="btn btn-primary">[[#{button.delete}]]</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -172,10 +202,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button"  class="btn btn-primary">Save changes</button>
             </div>
         </div>
-    </div>
+</div>
 </div>
 
 
@@ -195,7 +225,7 @@
 
     function upAmounts(currency){
         $.ajax({
-            url: "http://localhost:8080/amount/INCOME/" + currency
+            url: "http://localhost:8080/rest/amount/INCOME/" + currency
         }).then(function(data) {
             $('#income_day').html(data.day);
             $('#income_week').html(data.week);
@@ -204,7 +234,7 @@
         });
 
         $.ajax({
-            url: "http://localhost:8080/amount/EXPENSES/" + currency
+            url: "http://localhost:8080/rest/amount/EXPENSES/" + currency
         }).then(function(data) {
             $('#expenses_day').html(data.day);
             $('#expenses_week').html(data.week);
@@ -217,7 +247,7 @@
             language: {
                 url: "/dt_i18n/[[${#locale}]].lang"
             },
-            "sAjaxSource": "/trnsactions",
+            "sAjaxSource": "rest/trnsactions",
             "sAjaxDataProp": "",
             "order": [ [ 0, "asc" ] ],
             "aoColumns": [
@@ -234,7 +264,7 @@
             language: {
                 url: "/dt_i18n/[[${#locale}]].lang"
             },
-            "sAjaxSource": "/trnsactions/income",
+            "sAjaxSource": "rest/trnsactions/income",
             "sAjaxDataProp": "",
             "order": [ [ 0, "asc" ] ],
             "aoColumns": [
@@ -251,7 +281,7 @@
             language: {
                 url: "/dt_i18n/[[${#locale}]].lang"
             },
-            "sAjaxSource": "/trnsactions/expenses",
+            "sAjaxSource": "rest/trnsactions/expenses",
             "sAjaxDataProp": "",
             "order": [ [ 0, "asc" ] ],
             "aoColumns": [
@@ -265,6 +295,26 @@
         });
 
         upAmounts($('#currencySelect').val());
+
+        $("#currencyDelete").click(function(){
+            var cur = $('#currencySelect option:selected').html();
+            $("#deleteCurrencyModalTitle").html('[[#{currency.delete.title}]] ('+ cur +')');
+        });
+
+        $("#currencyDeleteSubmit").click(function(){
+            $.ajax({
+                url: '/currency/delete/' + $('#currencySelect').val(),
+                type: 'GET',
+                success: function(result) {
+                    $('#deleteCurrencyModal').modal('toggle');
+                },
+                error: function (result) {
+                    $('#deleteCurrencyModal').modal('toggle');
+                    $("#currencyMessageAlert").show();
+                    $("#currencyMessage").html(result.responseJSON.message);
+                }
+            });
+        });
 
     });
 

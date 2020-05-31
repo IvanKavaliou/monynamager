@@ -5,15 +5,11 @@ import net.ivan.kavaliou.moneyman.forms.RegistrationForm;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.User;
 import net.ivan.kavaliou.moneyman.repository.UsersRepository;
-import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import net.ivan.kavaliou.moneyman.utils.enums.UserRoles;
-import net.ivan.kavaliou.moneyman.validation.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
 
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

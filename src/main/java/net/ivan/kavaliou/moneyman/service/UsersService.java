@@ -1,9 +1,11 @@
 package net.ivan.kavaliou.moneyman.service;
 
 import lombok.extern.slf4j.Slf4j;
+import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.User;
 import net.ivan.kavaliou.moneyman.repository.UsersRepository;
+import net.ivan.kavaliou.moneyman.utils.Messages;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import net.ivan.kavaliou.moneyman.utils.enums.UserRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,9 @@ import java.util.Optional;
 @Service
 public class UsersService {
 
+
     @Autowired
-    Environment env;
+    Messages messages;
 
     @Autowired
     UsersRepository usersRepository;
@@ -45,27 +48,18 @@ public class UsersService {
         Optional<Currency> currency = currencyService.get(currencyType);
         if (currency.isPresent()){
             if(user.getUserCurrencys().contains(currency.get())){
-                user.getUserCurrencys().remove(currency.get());
-                usersRepository.save(user);
-                return true;
+                if (user.getUserCurrencys().size() > 1){
+                    user.getUserCurrencys().remove(currency.get());
+                    usersRepository.save(user);
+                    return true;
+                } else {
+                    throw new NotFoundException(messages.get("error.currency.last"));
+                }
+            } else {
+                throw new NotFoundException(messages.get("error.currency.notExisit"));
             }
         }
         return false;
-    }
-
-    public User registerUser(User user, ModelMap model){
-        log.info("UsersService::registrUser - {}", user);
-        if (usersRepository.findByEmail(user.getEmail())!= null){
-            model.put("error", env.getProperty("error.registration.userExsist"));
-            return user;
-        }
-
-        user.setEnabled(true);
-        user.setRoles(Collections.singleton(UserRoles.USER));
-        user.setCurrency(Currency.builder().id(100000).currencyType(CurrencyType.USD).build());
-        user.setUserCurrencys(Collections.singleton(Currency.builder().id(100000).currencyType(CurrencyType.USD).build()));
-        log.info("UsersService::registrUser - {}", user);
-        return usersRepository.save(user);
     }
 
     public Optional<User> findByEmail(String email){
