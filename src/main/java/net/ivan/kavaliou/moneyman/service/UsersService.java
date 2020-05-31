@@ -42,6 +42,8 @@ public class UsersService {
             if(!user.getUserCurrencys().contains(currency.get())){
                 user.getUserCurrencys().add(currency.get());
                 usersRepository.save(user);
+            } else {
+                throw new ServiceException(messages.get("error.currency.add.exsist"));
             }
         } else {
             throw new NotFoundException(messages.get("error.currency.notExisit"));
