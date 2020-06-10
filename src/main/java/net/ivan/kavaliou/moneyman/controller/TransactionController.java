@@ -1,11 +1,16 @@
 package net.ivan.kavaliou.moneyman.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import net.ivan.kavaliou.moneyman.forms.TransactionAddForm;
+import net.ivan.kavaliou.moneyman.forms.TransactionForm;
+import net.ivan.kavaliou.moneyman.validation.TransactionValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
@@ -13,10 +18,13 @@ import javax.validation.Valid;
 @Controller
 public class TransactionController {
 
-    @PostMapping("/transaction/add")
-    public String addTransaction(@Valid TransactionAddForm form, BindingResult bindingResult, Model model) {
-        log.info("TransactionController::addTransaction form={}", form);
+    @Autowired
+    TransactionValidator validator;
 
-        return "main";
+    @PostMapping("/transaction/add")
+    public String addTransaction( @Valid TransactionForm form, BindingResult bindingResult, Model model) {
+        validator.validate(form, bindingResult);
+        log.info("TransactionController::addTransaction form={}", form);
+        return "redirect:/main";
     }
 }

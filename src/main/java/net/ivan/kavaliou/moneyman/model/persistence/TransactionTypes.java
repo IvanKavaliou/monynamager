@@ -28,6 +28,6 @@ public class TransactionTypes {
     @NotBlank
     @Size(min = 1, max = 10)
     @Enumerated(EnumType.STRING)
-    @JsonSerialize(using = TransactionTypeSerializer.class)
+    //@JsonSerialize(using = TransactionTypeSerializer.class)
     private TransactionType transactionType;
 }

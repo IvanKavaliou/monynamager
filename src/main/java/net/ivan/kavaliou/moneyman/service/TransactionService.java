@@ -110,7 +110,7 @@ public class TransactionService {
     }
 
     public Transaction add(Transaction transaction){
-        transaction.setDate(LocalDateTime.now());
+       // transaction.setDate(LocalDateTime.now());
         return update(transaction);
     }
 

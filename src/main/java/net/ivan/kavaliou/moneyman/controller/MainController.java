@@ -7,7 +7,6 @@ import net.ivan.kavaliou.moneyman.service.TransactionCategoryService;
 import net.ivan.kavaliou.moneyman.service.TransactionService;
 import net.ivan.kavaliou.moneyman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +35,8 @@ public class MainController {
         User user = usersService.getAuthUser();
         model.addAttribute("user", user);
         model.addAttribute("allCurrencys", currencyService.getAllCurrency());
+        model.addAttribute("expensesCategorys",tCategoryService.getExpenses());
+        model.addAttribute("incomesCategorys", tCategoryService.getIncomes());
         return MAIN_VIEW; //view
     }
 }

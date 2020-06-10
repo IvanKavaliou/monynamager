@@ -3,11 +3,14 @@ package net.ivan.kavaliou.moneyman.controller.rest;
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.forms.AmountForm;
+import net.ivan.kavaliou.moneyman.forms.TransactionForm;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.Transaction;
 import net.ivan.kavaliou.moneyman.service.CurrencyService;
+import net.ivan.kavaliou.moneyman.service.TransactionCategoryService;
 import net.ivan.kavaliou.moneyman.service.TransactionService;
 import net.ivan.kavaliou.moneyman.service.UsersService;
+import net.ivan.kavaliou.moneyman.utils.DateTimeUtils;
 import net.ivan.kavaliou.moneyman.utils.enums.AmountType;
 import net.ivan.kavaliou.moneyman.utils.enums.CaseInsensitiveEnumEditor;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
@@ -16,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +38,24 @@ public class TransactionRestController {
 
     @Autowired
     private CurrencyService currencyService;
+
+    @Autowired
+    private TransactionCategoryService transactionCategoryService;
+
+    @PostMapping("/transactions")
+    public TransactionForm addTransaction(@RequestBody @Valid TransactionForm form){
+        Transaction t = Transaction.builder()
+                .id(form.getId())
+                .currency(currencyService.get(form.getCurrencyType()).get())
+                .date(DateTimeUtils.parseDate(form.getDate(), DateTimeUtils.LDT_INPUT_FORMAT))
+                .value(form.getValue())
+                .transactionCategory(transactionCategoryService.get(form.getIdTransactionCategory()).get())
+                .name(form.getName())
+                .build();
+        transactionService.add(t);
+        form.setId(t.getId());
+        return form;
+    }
 
     @GetMapping("/trnsactions")
     public List<Transaction> getAllTransactions() {

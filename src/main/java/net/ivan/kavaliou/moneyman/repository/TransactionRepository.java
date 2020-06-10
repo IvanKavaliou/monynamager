@@ -17,8 +17,6 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
-    @Query("SELECT t FROM transaction t WHERE t.user.id = :id_users")
-    public List<Transaction> getAllByIdUsers(@Param("id_users")Integer id_users);
     public List<Transaction> findByUserAndDateBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
     public List<Transaction> findByUserAndCurrency(User user, Currency currency);
     public Optional<Transaction> findByUserAndId(User user, Integer id);

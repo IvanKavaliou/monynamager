@@ -34,13 +34,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             "/js/**",
                             "/login").permitAll()
                     .anyRequest().authenticated()
+                .and().
+                httpBasic()
                 .and()
                     .formLogin().loginPage("/login").permitAll()
                 .and()
                     .formLogin().defaultSuccessUrl("/main", true)
                 .and()
                     .logout()
-                    .permitAll();
+                    .permitAll()
+        .and().csrf().disable();
     }
 
 

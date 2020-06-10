@@ -33,10 +33,4 @@ public class RootController {
         return INDEX_VIEW; //view
     }
 
-    // /hello?name=kotlin
-    @GetMapping("/hello")
-    public String mainWithParam(@RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
-        model.addAttribute("name", name);
-        return INDEX_VIEW; //view
-    }
 }
