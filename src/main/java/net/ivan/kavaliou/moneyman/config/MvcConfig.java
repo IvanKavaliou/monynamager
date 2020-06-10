@@ -43,14 +43,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-    @Bean
-    public FilterRegistrationBean getRequestContextFilter() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new FixLocaleFilter());
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
-    }
-
     //ResourcesHandler
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

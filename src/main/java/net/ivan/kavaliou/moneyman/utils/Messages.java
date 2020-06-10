@@ -1,5 +1,6 @@
 package net.ivan.kavaliou.moneyman.utils;
 
+import net.ivan.kavaliou.moneyman.config.CustomLocaleResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -19,7 +20,7 @@ public class Messages {
 
     @PostConstruct
     private void init() {
-        accessor = new MessageSourceAccessor(messageSource, LocaleContextHolder.getLocale());
+        accessor = new MessageSourceAccessor(messageSource, new CustomLocaleResolver().getDefaultLocale());
     }
 
     public String get(String code) {
