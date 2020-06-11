@@ -183,7 +183,7 @@
         </div>
     </div>
 </div>
-<!-- Modal ADD TRANSACTION -->
+<!-- Modal TRANSACTION -->
 <div class="modal fade" id="addTransModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -195,6 +195,10 @@
             </div>
             <div class="modal-body">
                     <form method="post" id="expensivAddFrom">
+                        <input id="transType"  type="hidden">
+                        <input id="transId"  type="hidden">
+                        <input id="transCatId"  type="hidden">
+
                         <div class="form-group">
                              <input id="trans_add_date" type="datetime-local" class="form-control">
                         </div>
@@ -239,15 +243,19 @@
                             </div>
                         </div>
 
-                        <input id="transType"  type="hidden">
-                        <input id="transId"  type="hidden">
-                        <input id="transCatId"  type="hidden">
-
-
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{button.close}]]</button>
                             <button type="submit"  class="btn btn-primary">[[#{button.save}]]</button>
+                        </div>
+                        <div id="trans_delete_modal" class="modal-footer collapse">
+                            <div id="trans_delete_alert" class="alert alert-primary alert-dismissible collapse" role="alert">
+                                <div>
+                                    [[#{trans.delete.message}]]
+                                    <a id="trans_delete_yes" href="#" class="alert-link ml-2">[[#{button.yes}]]</a>
+                                    <a id="trans_delete_alert_hide" href="#" class="alert-link ml-2">[[#{button.no}]]</a>
+                                </div>
+                            </div>
+                            <button type="button" id="button_trans_delete" class="btn btn-warning">[[#{button.delete}]]</button>
                         </div>
                     </form>
             </div>
@@ -262,6 +270,27 @@
         $("[data-hide]").on("click", function(){
             $(this).closest("." + $(this).attr("data-hide")).hide();
         });
+    });
+
+    $("#trans_delete_yes").click(function(){
+        $.ajax({
+            url: "rest/trnsactions/delete/"+$("#transId").val(),
+            type: "get",
+            success: function(d) {
+                window.location.replace("/main");
+            },
+            error: function (result) {
+
+            }
+        });
+    });
+
+    $("#trans_delete_alert_hide").click(function(){
+        $('#trans_delete_alert').collapse("hide");
+    });
+
+    $("#button_trans_delete").click(function(){
+        $('#trans_delete_alert').collapse("show");
     });
 
     $("#button_add_category").click(function(){
@@ -351,7 +380,7 @@
     }
 
     $(document).ready( function () {
-        function openTransModal(id, type) {
+        function openTransModal(id, type, mode) {
             $('#trans_add_name').removeClass('is-invalid');
             $('#trans_add_value').removeClass('is-invalid');
             $('#trans_add_date').removeClass('is-invalid');
@@ -378,11 +407,19 @@
                 $("#transType").val("INCOME");
             }
 
+            $('#trans_delete_alert').collapse("hide");
+            if (mode == "EDIT"){
+                $('#trans_delete_modal').collapse("show");
+            }
+            if (mode == "ADD"){
+                $('#trans_delete_modal').collapse("hide");
+            }
+
             $("#addTransModal").modal("show");
         }
         
         function editTrans(row) {
-            openTransModal(row.id, row.transactionCategory.transactionType.transactionType);
+            openTransModal(row.id, row.transactionCategory.transactionType.transactionType, "EDIT");
 
             $("#trans_add_name").val(row.name);
             $("#trans_add_value").val(row.value);
@@ -494,11 +531,11 @@
 
 
         $("#addExpensisButton").click(function(){
-            openTransModal(null, "EXPENSES");
+            openTransModal(null, "EXPENSES", "ADD");
             $('#trans_add_currencyType').val($("#currencySelect").val());
         });
         $("#addIncomeButton").click(function(){
-            openTransModal(null, "INCOME");
+            openTransModal(null, "INCOME", "ADD");
             $('#trans_add_currencyType').val($("#currencySelect").val());
         });
 

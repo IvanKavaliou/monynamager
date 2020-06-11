@@ -61,6 +61,12 @@ public class TransactionRestController {
         return transactionService.getAll();
     }
 
+    @GetMapping("/trnsactions/delete/{id}")
+    public boolean delete(@PathVariable Integer id) {
+        log.info("TransactionRestController::delete id = {}", id);
+        return transactionService.delete(id);
+    }
+
     @GetMapping("/trnsactions/income")
     public List<Transaction> getAllIncome() {
         log.info("TransactionRestController::getAllIncome {}", usersService.getAuthUser().getId());

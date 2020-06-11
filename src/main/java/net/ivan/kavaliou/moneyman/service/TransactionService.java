@@ -125,7 +125,7 @@ public class TransactionService {
             repository.delete(transaction.get());
             return true;
         }
-        return false;
+        throw new NotFoundException(messages.get("error.trnsaction.notFound"));
     }
 
     public Transaction update(Transaction transaction){
