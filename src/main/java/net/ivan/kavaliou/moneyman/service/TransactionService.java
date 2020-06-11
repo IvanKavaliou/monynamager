@@ -3,6 +3,7 @@ package net.ivan.kavaliou.moneyman.service;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.Transaction;
+import net.ivan.kavaliou.moneyman.model.persistence.TransactionCategory;
 import net.ivan.kavaliou.moneyman.repository.TransactionRepository;
 import net.ivan.kavaliou.moneyman.utils.DateTimeUtils;
 import net.ivan.kavaliou.moneyman.utils.Messages;
@@ -56,6 +57,10 @@ public class TransactionService {
             throw new NotFoundException(messages.get("error.currency.notExisit"));
         }
         return result;
+    }
+
+    public List<Transaction> getAllByCategory(TransactionCategory tc){
+        return repository.findByUserAndTransactionCategory(usersService.getAuthUser(), tc);
     }
 
     private List<Transaction> getAllByType(TransactionType type, LocalDateTime start, LocalDateTime end) {

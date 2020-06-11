@@ -12,7 +12,7 @@ public class TransactionTypesService {
     @Autowired
     TransactionTypesRepository repository;
 
-    private TransactionTypes get(TransactionType type){
+    public TransactionTypes get(TransactionType type){
         return repository.findByTransactionType(type);
     }
 

@@ -78,7 +78,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col"><h3>[[#{label.balance}]]</h3></div>
-                        <div id="balance" class="col"><h4>~~~~</h4></div>
+                        <div class="col"><h4 id="balance"></h4></div>
                     </div>
                     <div class="row">
 
@@ -162,7 +162,6 @@
         </div>
     </div>
 </div>
-<!-- DELETE CURRENCY MODAL #####END##### -->
 <!-- ADD CURRENCY MODAL #####START##### -->
 <div class="modal fade" id="addCurrencyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -184,11 +183,7 @@
         </div>
     </div>
 </div>
-<!-- ADD CURRENCY MODAL  #####END##### -->
-
-
-
-<!-- Modal ADD EXSPENSES -->
+<!-- Modal ADD TRANSACTION -->
 <div class="modal fade" id="addTransModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -199,9 +194,7 @@
                 </button>
             </div>
             <div class="modal-body">
-
-             <form method="post" id="expensivAddFrom">
-
+                    <form method="post" id="expensivAddFrom">
                         <div class="form-group">
                              <input id="trans_add_date" type="datetime-local" class="form-control">
                         </div>
@@ -211,7 +204,7 @@
                         </div>
                         <div class="form-group">
                             <h6>[[#{label.value}]]</h6>
-                            <input id="trans_add_value" type="number" class="form-control" th:placeholder="#{label.value}" />
+                            <input id="trans_add_value" type="number" step="0.01" class="form-control" th:placeholder="#{label.value}" />
                         </div>
                         <div class="form-group">
                             <h6>[[#{label.currency}]]</h6>
@@ -220,23 +213,44 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <h6>[[#{label.category}]]</h6>
-                            <select id="trans_add_idTransactionCategoryExp" class="nice-select custom-select custom-select-sm collapse">
+                            <div class="row">
+                                <h6 class="ml-3">[[#{label.category}]]</h6>
+                                <div id="trans_edit_buttons_open" class="collapse show">
+                                    <button type="button" id="button_add_category"  class="btn btn-light btn-sm ml-3">[[#{button.add}]]</button>
+                                    <button type="button" id="button_edit_category"  class="btn btn-light btn-sm ml-3">[[#{button.edit}]]</button>
+                                </div>
+                            </div>
+                            <select id="trans_add_idTransactionCategory_EXPENSES" class="nice-select custom-select custom-select-sm mt-1 collapse">
                                 <option th:each="category : ${expensesCategorys}" th:value="${category.getId()}" th:text= "${category.getName()}"></option>
                             </select>
-                            <select id="trans_add_idTransactionCategoryInc" class="nice-select custom-select custom-select-sm collapse">
+                            <select id="trans_add_idTransactionCategory_INCOME" class="nice-select custom-select custom-select-sm mt-1 collapse">
                                 <option th:each="category : ${incomesCategorys}" th:value="${category.getId()}" th:text= "${category.getName()}"></option>
                             </select>
                         </div>
-                         <input id="transType"  type="hidden">
-                        <input id="transId"  type="hidden">
 
-            </div>
+                        <div id="trans_category_edit" class="form-group collapse">
+                            <input id="trans_category_input_name" type="text" class="form-control" th:placeholder="#{label.category}" />
+                            <button type="button"  id="button_edit_category_save" class="btn btn-light btn-sm mt-2">[[#{button.save}]]</button>
+                            <button type="button" id="button_edit_category_close"  class="btn btn-light btn-sm ml-1 mt-2">[[#{button.close}]]</button>
+                            <button type="button" id="button_edit_category_delete"  class="btn btn-light btn-sm ml-1 mt-2 collapse">[[#{button.delete}]]</button>
+                            <div id="trans_category_edit_allert" class="alert alert-primary alert-dismissible collapse" role="alert">
+                                <div id="trans_category_edit_message"></div>
+                                <button type="button" class="close"  data-hide="alert"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                        </div>
+
+                        <input id="transType"  type="hidden">
+                        <input id="transId"  type="hidden">
+                        <input id="transCatId"  type="hidden">
+
+
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{button.close}]]</button>
-                            <button type="submit"  class="btn btn-primary">[[#{button.add}]]</button>
+                            <button type="submit"  class="btn btn-primary">[[#{button.save}]]</button>
                         </div>
-            </form>
+                    </form>
+            </div>
         </div>
     </div>
 </div>
@@ -247,6 +261,69 @@
     $(function(){
         $("[data-hide]").on("click", function(){
             $(this).closest("." + $(this).attr("data-hide")).hide();
+        });
+    });
+
+    $("#button_add_category").click(function(){
+        $('#transCatId').val(null);
+       $("#trans_category_edit").collapse("show");
+        $("#trans_edit_buttons_open").collapse("hide");
+    });
+
+    $("#button_edit_category").click(function(){
+        $("#trans_category_input_name").val($('#trans_add_idTransactionCategory_'+$("#transType").val()+' option:selected').text());
+        $('#trans_add_idTransactionCategory_'+$("#transType").val()).prop('disabled', 'disabled');
+        $('#transCatId').val($('#trans_add_idTransactionCategory_'+$("#transType").val()).val());
+        $('#button_edit_category_delete').collapse("show");
+        $("#trans_category_edit").collapse("show");
+        $("#trans_edit_buttons_open").collapse("hide");
+    });
+
+    $("#button_edit_category_close").click(function(){
+        $('#trans_add_idTransactionCategory_'+$("#transType").val()).prop('disabled', false);
+        $("#trans_category_input_name").val("");
+        $('#trans_category_input_name').removeClass('is-invalid');
+        $('#button_edit_category_delete').collapse("hide");
+        $("#trans_edit_buttons_open").collapse("show");
+        $("#trans_category_edit").collapse("hide");
+        $('#trans_category_edit_allert').collapse("hide");
+    });
+
+    $("#button_edit_category_save").click(function(){
+        var formData = {
+            'id':   $('#transCatId').val(),
+            'name': $('#trans_category_input_name').val(),
+            'transactionType' : $('#transType').val()
+        };
+
+        $.ajax({
+            url: "rest/category/save",
+            type: "post",
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(d) {
+                window.location.replace("/main");
+            },
+            error: function (result) {
+                $(result.responseJSON.errors).each(function() {
+                    $('#trans_category_input_'+this.field).addClass('is-invalid');
+                });
+            }
+        });
+    });
+
+    $("#button_edit_category_delete").click(function(){
+        $.ajax({
+            url: "rest/category/delete/"+$("#transCatId").val(),
+            type: "get",
+            success: function(d) {
+                window.location.replace("/main");
+            },
+            error: function (result) {
+                $('#trans_category_edit_allert').collapse("show");
+                $('#trans_category_edit_message').html(result.responseJSON.message);
+            }
         });
     });
 
@@ -286,16 +363,18 @@
             $("#trans_add_value").val("");
             $("#trans_add_date").val(new Date().toJSON().slice(0,16));
 
+            $("#button_edit_category_close").click();
+
             if (type =="EXPENSES"){
                 $("#addTransModalTitle").html("[[#{label.expenses}]]");
-                $("#trans_add_idTransactionCategoryInc").collapse("hide");
-                $('#trans_add_idTransactionCategoryExp').collapse("show");
+                $("#trans_add_idTransactionCategory_INCOME").collapse("hide");
+                $('#trans_add_idTransactionCategory_EXPENSES').collapse("show");
                 $("#transType").val("EXPENSES");
             }
             if(type == "INCOME"){
                 $("#addTransModalTitle").html("[[#{label.income}]]");
-                $("#trans_add_idTransactionCategoryInc").collapse("show");
-                $('#trans_add_idTransactionCategoryExp').collapse("hide");
+                $("#trans_add_idTransactionCategory_INCOME").collapse("show");
+                $('#trans_add_idTransactionCategory_EXPENSES').collapse("hide");
                 $("#transType").val("INCOME");
             }
 
@@ -307,15 +386,9 @@
 
             $("#trans_add_name").val(row.name);
             $("#trans_add_value").val(row.value);
-            $('#trans_add_currencyType option[value='+row.currency.currencyType+']').attr('selected','selected');
+            $('#trans_add_currencyType').val(row.currency.currencyType);
             $("#trans_add_date").val(row.date.replace(" ","T"));
-
-            if(row.transactionCategory.transactionType.transactionType == "EXPENSES"){
-                $('#trans_add_idTransactionCategoryExp option[value='+row.transactionCategory.id+']').attr('selected','selected');
-            }
-            if(row.transactionCategory.transactionType.transactionType == "INCOME"){
-                $('#trans_add_idTransactionCategoryInc option[value='+row.transactionCategory.id+']').attr('selected','selected');
-            }
+            $('#trans_add_idTransactionCategory_'+row.transactionCategory.transactionType.transactionType+' option[value='+row.transactionCategory.id+']').attr('selected','selected');
         }
 
 
@@ -422,9 +495,11 @@
 
         $("#addExpensisButton").click(function(){
             openTransModal(null, "EXPENSES");
+            $('#trans_add_currencyType').val($("#currencySelect").val());
         });
         $("#addIncomeButton").click(function(){
             openTransModal(null, "INCOME");
+            $('#trans_add_currencyType').val($("#currencySelect").val());
         });
 
     });
@@ -433,28 +508,14 @@
         $("#expensivAddFrom").on("submit", function(event) {
             event.preventDefault();
 
-            var formData;
-            if($("#transType").val() == "EXPENSES"){
-                 formData = {
+            var formData = {
                     'id': $("#transId").val(),
                     'name': $('#trans_add_name').val(),
                     'date' : $('#trans_add_date').val(),
                     'value' : $('#trans_add_value').val(),
                     'currencyType' : $('#trans_add_currencyType').val(),
-                    'idTransactionCategory' : $('#trans_add_idTransactionCategoryExp').val()
+                    'idTransactionCategory' : $('#trans_add_idTransactionCategory_'+$("#transType").val()).val()
                 };
-            }
-            if($("#transType").val() =="INCOME"){
-                formData = {
-                    'id': $("#transId").val(),
-                    'name': $('#trans_add_name').val(),
-                    'date' : $('#trans_add_date').val(),
-                    'value' : $('#trans_add_value').val(),
-                    'currencyType' : $('#trans_add_currencyType').val(),
-                    'idTransactionCategory' : $('#trans_add_idTransactionCategoryInc').val()
-                };
-            }
-
 
             $.ajax({
                 url: "rest/transactions",
@@ -468,11 +529,7 @@
                 error: function (result) {
                     $(result.responseJSON.errors).each(function() {
                         if(this.field == 'idTransactionCategory'){
-                            if($("#transType").val() == "EXPENSES"){
-                                $('#trans_add_'+this.field+'Exp').addClass('is-invalid');
-                            } else {
-                                $('#trans_add_'+this.field+'Inc').addClass('is-invalid');
-                            }
+                            $('#trans_add_'+this.field+'_'+$("#transType").val()).addClass('is-invalid');
                         } else{
                             $('#trans_add_'+this.field).addClass('is-invalid');
                         }

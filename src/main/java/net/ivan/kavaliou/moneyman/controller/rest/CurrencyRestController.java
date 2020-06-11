@@ -3,6 +3,7 @@ package net.ivan.kavaliou.moneyman.controller.rest;
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.service.UsersService;
+import net.ivan.kavaliou.moneyman.utils.Messages;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

@@ -14,4 +14,5 @@ public interface TransactionCategoryRepository extends JpaRepository<Transaction
 
     List<TransactionCategory> findByUserAndAndTransactionType(User user, TransactionTypes transactionType);
     Optional<TransactionCategory> findByUserAndId(User user, Integer id);
+    Optional<TransactionCategory> findOneByUserAndAndTransactionTypeAndName(User user, TransactionTypes transactionType, String name);
 }
