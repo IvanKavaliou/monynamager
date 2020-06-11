@@ -1,5 +1,6 @@
 package net.ivan.kavaliou.moneyman.model.persistence;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -40,7 +42,8 @@ public class User{
 
     @Column(name = "registred", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private Date registred = new Date();
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private LocalDateTime registred = LocalDateTime.now();
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;

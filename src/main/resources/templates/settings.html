@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head>
+        <th:block th:insert="fragments/general :: header"/>
+    </head>
+</head>
+<body>
+<th:block th:insert="fragments/header :: header" />
+<div class="row justify-content-center">
+<div class="container">
+    <div class="row">
+        <div class="col">[[#{label.email}]] :</div>
+        <div class="col">
+            <div class="row">
+                <div class="col input-group-sm mb-3">
+                    <input id="input_email" type="text" class="form-control" disabled="disabled" th:value="${user.email}">
+                </div>
+                <div class="col">
+                    <button id="button_email_change" type="button" class="btn btn-light btn-sm ml-3 collapse show">[[#{button.change}]]</button>
+                    <div id="email_change_buttons" class="collapse">
+                        <button id="button_email_save" type="button" class="btn btn-light btn-sm ml-3 ">[[#{button.save}]]</button>
+                        <button id="button_email_close" type="button" class="btn btn-light btn-sm ml-3 ">[[#{button.close}]]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col">[[#{label.reg.date}]] :</div>
+        <div class="col">[[${#temporals.format(user.registred, 'dd-MM-yyyy HH:mm')}]]</div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col">[[#{label.roles}]] :</div>
+        <th:block th:each="rol : ${user.roles}">
+            <div class="col"><a th:text= "#{label.role. + ${rol}}"></a></div>
+        </th:block>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col">[[#{label.password}]] :</div>
+        <div class="col">
+            <div class="row">
+                <div class="col  input-group-sm mb-3">
+                    <input  type="password" id="input_old_password" class="form-control" value="***********" disabled="disabled">
+                    <label id="label_old_password" class="font-weight-light text-muted collapse" style="font-size: small;" th:text="#{label.password.old}"></label>
+                    <div id="password_inputs" class="collapse input-group-sm mb-3">
+                        <input type="password" id="input_new_password" class="form-control">
+                        <label class="font-weight-light text-muted" style="font-size: small;" th:text="#{label.password.new}"></label>
+                        <input type="password" id="input_new_password_repeat" class="form-control">
+                        <label class="font-weight-light text-muted" style="font-size: small;" th:text="#{label.password.repeat}"></label>
+                        <div id="password_change_buttons">
+                            <button id="button_password_save" type="button" class="btn btn-light btn-sm ml-3 ">[[#{button.save}]]</button>
+                            <button id="button_password_close" type="button" class="btn btn-light btn-sm ml-3 ">[[#{button.close}]]</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <button id="button_password_change" type="button" class="btn btn-light btn-sm ml-3 collapse show">[[#{button.change}]]</button>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+</div>
+
+<script>
+$('#button_email_change').click(function () {
+    $('#button_email_change').collapse("hide");
+    $('#input_email').prop('disabled', false);
+    $('#email_change_buttons').collapse("show");
+});
+$('#button_email_close').click(function () {
+    $('#email_change_buttons').collapse("hide");
+    $('#button_email_change').collapse("show");
+    $('#input_email').val('[[${user.email}]]');
+    $('#input_email').prop('disabled', 'disabled');
+});
+
+$('#button_password_change').click(function () {
+    $('#button_password_change').collapse("hide");
+    $('#input_old_password').prop('disabled', false);
+    $('#input_old_password').val("");
+    $('#password_inputs').collapse("show");
+    $('#label_old_password').collapse("show");
+});
+$('#button_password_close').click(function () {
+    $('#button_password_change').collapse("show");
+    $('#input_old_password').val("***********");
+    $('#input_old_password').prop('disabled', 'disabled');
+    $('#label_old_password').collapse("hide");
+    $('#password_inputs').collapse("hide");
+});
+</script>
+
+<th:block th:insert="fragments/general :: footer"/>
+</body>
+</html>

@@ -13,6 +13,7 @@
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav ml-auto">
                         <div sec:authorize="!isAuthenticated()"><li class="nav-item" role="presentation"><a class="nav-link" href="/registration">[[#{label.registration}]]</a></li></div>
+                        <div sec:authorize="isAuthenticated()"><li class="nav-item" role="presentation"><a class="nav-link" href="/settings" onclick="">[[#{label.settings}]]</a></li> </div>
                         <div sec:authorize="isAuthenticated()"><li class="nav-item" role="presentation"><a class="nav-link" href="javascript:{}" onclick="$('#logout_form').submit();return false;">[[#{label.logout}]]</a></li> </div>
                             <div sec:authorize="!isAuthenticated()"> <li class="nav-item" role="presentation"><a class="nav-link" href="/login">[[#{label.login}]]</a></li></div>
                         <li class="nav-item"  role="presentation">
