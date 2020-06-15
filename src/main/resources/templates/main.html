@@ -419,13 +419,14 @@
         }
         
         function editTrans(row) {
-            openTransModal(row.id, row.transactionCategory.transactionType.transactionType, "EDIT");
+            console.log(row);
+            openTransModal(row.id, row.transactionCategory.transactionType, "EDIT");
 
             $("#trans_add_name").val(row.name);
             $("#trans_add_value").val(row.value);
-            $('#trans_add_currencyType').val(row.currency.currencyType);
+            $('#trans_add_currencyType').val(row.currencyType);
             $("#trans_add_date").val(row.date.replace(" ","T"));
-            $('#trans_add_idTransactionCategory_'+row.transactionCategory.transactionType.transactionType+' option[value='+row.transactionCategory.id+']').attr('selected','selected');
+            $('#trans_add_idTransactionCategory_'+row.transactionCategory.transactionType+' option[value='+row.transactionCategory.id+']').attr('selected','selected');
         }
 
 
@@ -435,14 +436,14 @@
             },
             "sAjaxSource": "rest/trnsactions",
             "sAjaxDataProp": "",
-            "order": [ [ 0, "asc" ] ],
+            "order": [ [ 0, "desc" ] ],
             "aoColumns": [
                 { "data": "date"},
                 { "data": "name" },
                 { "data": "value" },
-                { "data": "currency.currencyType"},
+                { "data": "currencyType"},
                 { "data": "transactionCategory.name"},
-                { "data": "transactionCategory.transactionType.transactionType"}
+                { "data": "transactionCategory.transactionType"}
             ]
         });
 
@@ -456,14 +457,14 @@
             },
             "sAjaxSource": "rest/trnsactions/income",
             "sAjaxDataProp": "",
-            "order": [ [ 0, "asc" ] ],
+            "order": [ [ 0, "desc" ] ],
             "aoColumns": [
                 { "data": "date"},
                 { "data": "name" },
                 { "data": "value" },
-                { "data": "currency.currencyType"},
+                { "data": "currencyType"},
                 { "data": "transactionCategory.name"},
-                { "data": "transactionCategory.transactionType.transactionType"}
+                { "data": "transactionCategory.transactionType"}
             ]
         });
 
@@ -477,14 +478,14 @@
             },
             "sAjaxSource": "rest/trnsactions/expenses",
             "sAjaxDataProp": "",
-            "order": [ [ 0, "asc" ] ],
+            "order": [ [ 0, "desc" ] ],
             "aoColumns": [
                 { "data": "date"},
                 { "data": "name" },
                 { "data": "value" },
-                { "data": "currency.currencyType"},
+                { "data": "currencyType"},
                 { "data": "transactionCategory.name"},
-                { "data": "transactionCategory.transactionType.transactionType"}
+                { "data": "transactionCategory.transactionType"}
             ]
         });
 

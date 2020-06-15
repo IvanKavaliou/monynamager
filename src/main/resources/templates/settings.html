@@ -64,6 +64,9 @@
         </div>
         <div class="col"></div>
     </div>
+    <div class="row">
+        <p id="errors"  style="color: #ff0000;"></p>
+    </div>
 </div>
 </div>
 
@@ -93,6 +96,44 @@ $('#button_password_close').click(function () {
     $('#input_old_password').prop('disabled', 'disabled');
     $('#label_old_password').collapse("hide");
     $('#password_inputs').collapse("hide");
+});
+
+$('#button_email_save').click(function () {
+    $.ajax({
+        url: "rest/change/email",
+        type: "post",
+        data: $('#input_email').val(),
+        contentType: 'application/json',
+        success: function(a) {
+            console.log(a);
+            window.location.replace("/settings");
+        },
+        error: function(result) {
+                $('#errors').html(result.responseJSON.message);
+        }
+    });
+});
+
+$('#button_password_save').click(function () {
+
+    var formData = {
+        'oldPassword': $("#input_old_password").val(),
+        'password': $('#input_new_password').val(),
+        'passwordRepeat' : $('#input_new_password_repeat').val()
+    };
+
+    $.ajax({
+        url: "rest/change/password",
+        type: "post",
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function(a) {
+            window.location.replace("/settings");
+        },
+        error: function(result) {
+            $('#errors').html(result.responseJSON.message);
+        }
+    });
 });
 </script>
 

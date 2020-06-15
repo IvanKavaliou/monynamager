@@ -1,12 +1,10 @@
 package net.ivan.kavaliou.moneyman.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
-import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.forms.TransactionCategoryForm;
 import net.ivan.kavaliou.moneyman.model.persistence.TransactionCategory;
 import net.ivan.kavaliou.moneyman.service.TransactionCategoryService;
 import net.ivan.kavaliou.moneyman.service.TransactionTypesService;
-import net.ivan.kavaliou.moneyman.utils.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -85,6 +85,14 @@ public class TransactionService {
                                  .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getIncomeDaylyAmount(CurrencyType currency){
+        return getAmount(TransactionType.INCOME, currency, LocalDate.now().atTime(LocalTime.MIN),  LocalDate.now().atTime(LocalTime.MAX));
+    }
+
+    public BigDecimal getExpensesDaylyAmount(CurrencyType currency){
+        return getAmount(TransactionType.EXPENSES, currency, LocalDate.now().atTime(LocalTime.MIN),  LocalDate.now().atTime(LocalTime.MAX));
+    }
+
     public BigDecimal getIncomeAmount(CurrencyType currency){
         return getAmount(TransactionType.INCOME, currency, DateTimeUtils.MIN_DATE, DateTimeUtils.MAX_DATE);
     }

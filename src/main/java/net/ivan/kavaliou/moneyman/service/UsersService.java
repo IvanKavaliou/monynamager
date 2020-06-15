@@ -1,8 +1,10 @@
 package net.ivan.kavaliou.moneyman.service;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.exceptions.ServiceException;
+import net.ivan.kavaliou.moneyman.forms.PasswordChangeForm;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.User;
 import net.ivan.kavaliou.moneyman.repository.UsersRepository;
@@ -11,10 +13,14 @@ import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import net.ivan.kavaliou.moneyman.utils.enums.UserRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -72,6 +78,40 @@ public class UsersService {
             }
         }
         return false;
+    }
+
+    public User changeEmail(String email){
+        if(findByEmail(email.trim().toLowerCase()).isPresent()){
+            throw new  ServiceException(messages.get("error.email.change.exsist"));
+        }
+        User user = getAuthUser();
+        user.setEmail(email.trim().toLowerCase());
+
+        Collection<SimpleGrantedAuthority> nowAuthorities =(Collection<SimpleGrantedAuthority>)SecurityContextHolder
+                .getContext().getAuthentication().getAuthorities();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, user.getPassword(), nowAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return  save(user);
+    }
+
+    public User chanhePassword(PasswordChangeForm form){
+        User user = getAuthUser();
+        if (!form.getOldPassword().equals(user.getPassword())){
+            throw new ServiceException(messages.get("error.password.old"));
+        }
+        if (!form.getPassword().equals(form.getPasswordRepeat())){
+            throw new ServiceException(messages.get("error.password.matches"));
+        }
+        if (form.getPassword().equals(user.getPassword())){
+            throw new ServiceException(messages.get("error.password.old"));
+        }
+        Collection<SimpleGrantedAuthority> nowAuthorities =(Collection<SimpleGrantedAuthority>)SecurityContextHolder
+                .getContext().getAuthentication().getAuthorities();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), form.getPassword(), nowAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        user.setPassword(form.getPassword());
+        return save(user);
     }
 
     public Optional<User> findByEmail(String email){

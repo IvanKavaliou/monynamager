@@ -7,6 +7,7 @@ public class DateTimeUtils {
     public static final LocalDateTime MIN_DATE = LocalDateTime.of(2000, 01, 01,00,00);
     public static final LocalDateTime MAX_DATE = LocalDateTime.of(3000, 01, 01,00,00);
     public static final String LDT_INPUT_FORMAT = "yyyy-MM-dd'T'HH:mm";
+    public static final String LDT_INPUT_FORMAT_WITHOUT_T = "yyyy-MM-dd HH:mm";
 
     public static LocalDateTime getStartOfMount(){
         LocalDateTime now = LocalDateTime.now();
@@ -21,6 +22,11 @@ public class DateTimeUtils {
     public static LocalDateTime parseDate(String date, String pattern){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return LocalDateTime.parse(date, formatter);
+    }
+
+    public static String parseDate(LocalDateTime date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LDT_INPUT_FORMAT_WITHOUT_T);
+        return date.format(formatter);
     }
 
 }

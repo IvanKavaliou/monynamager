@@ -3,6 +3,7 @@ package net.ivan.kavaliou.moneyman.controller.rest;
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.forms.AmountForm;
+import net.ivan.kavaliou.moneyman.forms.TransactionCategoryForm;
 import net.ivan.kavaliou.moneyman.forms.TransactionForm;
 import net.ivan.kavaliou.moneyman.model.persistence.Currency;
 import net.ivan.kavaliou.moneyman.model.persistence.Transaction;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -56,9 +60,9 @@ public class TransactionRestController {
     }
 
     @GetMapping("/trnsactions")
-    public List<Transaction> getAllTransactions() {
+    public List<TransactionForm> getAllTransactions() {
         log.info("TransactionRestController::getAllTransactions {}", usersService.getAuthUser().getId());
-        return transactionService.getAll();
+        return convertTransactionsToTransactionsForm(transactionService.getAll());
     }
 
     @GetMapping("/trnsactions/delete/{id}")
@@ -68,15 +72,32 @@ public class TransactionRestController {
     }
 
     @GetMapping("/trnsactions/income")
-    public List<Transaction> getAllIncome() {
+    public List<TransactionForm> getAllIncome() {
         log.info("TransactionRestController::getAllIncome {}", usersService.getAuthUser().getId());
-        return transactionService.getAllIncome();
+        return convertTransactionsToTransactionsForm(transactionService.getAllIncome());
     }
 
     @GetMapping("/trnsactions/expenses")
-    public List<Transaction> getAllExpenses() {
+    public List<TransactionForm> getAllExpenses() {
         log.info("TransactionRestController::getAllExpenses {}", usersService.getAuthUser().getId());
-        return transactionService.getAllExpenses();
+        return convertTransactionsToTransactionsForm(transactionService.getAllExpenses());
+    }
+
+    private List<TransactionForm> convertTransactionsToTransactionsForm(List<Transaction> list){
+        List<TransactionForm> transactionFormList = new ArrayList<>();
+        list.forEach(t -> transactionFormList.add(TransactionForm.builder()
+                .id(t.getId())
+                .currencyType(t.getCurrency().getCurrencyType())
+                .value(t.getValue())
+                .transactionCategory(TransactionCategoryForm.builder()
+                        .id(t.getTransactionCategory().getId())
+                        .name(t.getTransactionCategory().getName())
+                        .transactionType(t.getTransactionCategory().getTransactionType().getTransactionType())
+                        .build())
+                .name(t.getName())
+                .date(DateTimeUtils.parseDate(t.getDate()))
+                .build()));
+        return  transactionFormList.stream().sorted(Comparator.comparing(TransactionForm::getDate, Comparator.nullsLast(Comparator.naturalOrder()))).collect(Collectors.toList());
     }
 
     @GetMapping("/amount/{type}/{currency}")
@@ -87,7 +108,7 @@ public class TransactionRestController {
             if (usersService.getAuthUser().getUserCurrencys().contains(currencyService.get(currency).get())) {
                 if (type.equals(TransactionType.INCOME)) {
                     return AmountForm.builder()
-                            .day("0")
+                            .day(transactionService.getIncomeDaylyAmount(currency).toString())
                             .week(transactionService.getIncomeWeeklyAmount(currency).toString())
                             .month(transactionService.getIncomeMonthAmount(currency).toString())
                             .balance(calculatealance(currency).toString())
@@ -96,7 +117,7 @@ public class TransactionRestController {
 
                 if (type.equals(TransactionType.EXPENSES)) {
                    return AmountForm.builder()
-                            .day("0")
+                            .day(transactionService.getExpensesDaylyAmount(currency).toString())
                             .week(transactionService.getExpensesWeeklyAmount(currency).toString())
                             .month(transactionService.getExpensesMonthAmount(currency).toString())
                             .balance(calculatealance(currency).toString())
