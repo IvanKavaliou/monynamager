@@ -32,7 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             "/static/**",
                             "/styles/**",
                             "/js/**",
-                            "/login").permitAll()
+                            "/login",
+                            "/rest/login",
+                            "/rest/registration").permitAll()
                     .anyRequest().authenticated()
                 .and().
                 httpBasic()

@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
+import net.ivan.kavaliou.moneyman.forms.AccountForm;
 import net.ivan.kavaliou.moneyman.forms.AmountForm;
 import net.ivan.kavaliou.moneyman.forms.TransactionCategoryForm;
 import net.ivan.kavaliou.moneyman.forms.TransactionForm;
@@ -83,6 +84,19 @@ public class TransactionRestController {
         return convertTransactionsToTransactionsForm(transactionService.getAllExpenses());
     }
 
+    @GetMapping("/transactions/accounts")
+    public List<AccountForm> getAccounts(){
+        List<AccountForm> result = new ArrayList<>();
+        usersService.getAuthUser().getUserCurrencys().forEach(currency -> {
+            result.add(AccountForm.builder()
+                    .currencyType(currency.getCurrencyType())
+                    .expenses(getAmount(TransactionType.EXPENSES, currency.getCurrencyType()))
+                    .income(getAmount(TransactionType.INCOME, currency.getCurrencyType()))
+                    .build());
+        });
+        return result;
+    }
+
     private List<TransactionForm> convertTransactionsToTransactionsForm(List<Transaction> list){
         List<TransactionForm> transactionFormList = new ArrayList<>();
         list.forEach(t -> transactionFormList.add(TransactionForm.builder()
@@ -97,7 +111,7 @@ public class TransactionRestController {
                 .name(t.getName())
                 .date(DateTimeUtils.parseDate(t.getDate()))
                 .build()));
-        return  transactionFormList.stream().sorted(Comparator.comparing(TransactionForm::getDate, Comparator.nullsLast(Comparator.naturalOrder()))).collect(Collectors.toList());
+        return  transactionFormList.stream().sorted(Comparator.comparing(TransactionForm::getDate, Comparator.nullsLast(Comparator.reverseOrder()))).collect(Collectors.toList());
     }
 
     @GetMapping("/amount/{type}/{currency}")

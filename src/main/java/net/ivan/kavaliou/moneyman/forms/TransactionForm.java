@@ -34,5 +34,5 @@ public class TransactionForm {
     private String name;
 
     @NotNull
-    String date;
+    private String date;
 }

@@ -5,9 +5,10 @@ import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, Integer> {
-    public Optional<Currency> findByCurrencyType(CurrencyType type);
+    Optional<Currency> findByCurrencyType(CurrencyType type);
 }
