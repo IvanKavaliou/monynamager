@@ -52,7 +52,8 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/popper.js/1.14.1/umd/");
         registry.addResourceHandler("/bootstrap/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/bootstrap/4.1.1/");
-
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
     }
 
     //Messages

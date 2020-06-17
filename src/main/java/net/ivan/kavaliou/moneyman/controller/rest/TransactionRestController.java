@@ -2,6 +2,7 @@ package net.ivan.kavaliou.moneyman.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
+import net.ivan.kavaliou.moneyman.exceptions.ServiceException;
 import net.ivan.kavaliou.moneyman.forms.AccountForm;
 import net.ivan.kavaliou.moneyman.forms.AmountForm;
 import net.ivan.kavaliou.moneyman.forms.TransactionCategoryForm;
@@ -13,6 +14,7 @@ import net.ivan.kavaliou.moneyman.service.TransactionCategoryService;
 import net.ivan.kavaliou.moneyman.service.TransactionService;
 import net.ivan.kavaliou.moneyman.service.UsersService;
 import net.ivan.kavaliou.moneyman.utils.DateTimeUtils;
+import net.ivan.kavaliou.moneyman.utils.Messages;
 import net.ivan.kavaliou.moneyman.utils.enums.AmountType;
 import net.ivan.kavaliou.moneyman.utils.enums.CaseInsensitiveEnumEditor;
 import net.ivan.kavaliou.moneyman.utils.enums.CurrencyType;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -45,12 +48,24 @@ public class TransactionRestController {
     @Autowired
     private TransactionCategoryService transactionCategoryService;
 
+    @Autowired
+    private Messages messages;
+
     @PostMapping("/transactions")
     public TransactionForm addTransaction(@RequestBody @Valid TransactionForm form){
+        LocalDateTime date = LocalDateTime.now();
+        try{
+            date =  DateTimeUtils.parseDate(form.getDate(), DateTimeUtils.LDT_INPUT_FORMAT);
+        } catch (Exception e){
+            try{
+                date =  DateTimeUtils.parseDate(form.getDate(), DateTimeUtils.LDT_INPUT_FORMAT_WITHOUT_T);
+            } catch (Exception ex){throw new ServiceException(messages.get("error.cannot.parse.date"));}
+        }
+
         Transaction t = Transaction.builder()
                 .id(form.getId())
                 .currency(currencyService.get(form.getCurrencyType()).get())
-                .date(DateTimeUtils.parseDate(form.getDate(), DateTimeUtils.LDT_INPUT_FORMAT))
+                .date(date)
                 .value(form.getValue())
                 .transactionCategory(transactionCategoryService.get(form.getIdTransactionCategory()).get())
                 .name(form.getName())
