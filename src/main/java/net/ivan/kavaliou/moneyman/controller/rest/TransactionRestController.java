@@ -59,7 +59,8 @@ public class TransactionRestController {
         } catch (Exception e){
             try{
                 date =  DateTimeUtils.parseDate(form.getDate(), DateTimeUtils.LDT_INPUT_FORMAT_WITHOUT_T);
-            } catch (Exception ex){throw new ServiceException(messages.get("error.cannot.parse.date"));}
+            } catch (Exception ex){
+            }
         }
 
         Transaction t = Transaction.builder()

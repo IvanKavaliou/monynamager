@@ -18,21 +18,20 @@ public class TransactionForm {
 
     private Integer id;
 
-    @NotNull(message = "error.notBlank")
+    @NotNull(message = "{error.notBlank}")
     private CurrencyType currencyType;
 
-    @NotNull (message = "error.notBlank")
+    @NotNull (message = "{error.value.not.blank}")
     private BigDecimal value;
 
-    @NotNull (message = "error.notBlank")
+    @NotNull (message = "{error.notBlank}")
     private Integer idTransactionCategory;
 
     private TransactionCategoryForm transactionCategory;
 
     @NotNull
-    @NotBlank(message = "error.notBlank")
+    @NotBlank(message = "{error.description.not.blank}")
     private String name;
 
-    @NotNull
     private String date;
 }
