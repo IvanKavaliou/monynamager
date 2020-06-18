@@ -53,6 +53,7 @@ public class TransactionRestController {
 
     @PostMapping("/transactions")
     public TransactionForm addTransaction(@RequestBody @Valid TransactionForm form){
+        log.info("TransactionRestController::addTransaction form = {}", form);
         LocalDateTime date = LocalDateTime.now();
         try{
             date =  DateTimeUtils.parseDate(form.getDate(), DateTimeUtils.LDT_INPUT_FORMAT);
