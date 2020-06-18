@@ -239,7 +239,7 @@
                             <button type="button" id="button_edit_category_delete"  class="btn btn-light btn-sm ml-1 mt-2 collapse">[[#{button.delete}]]</button>
                             <div id="trans_category_edit_allert" class="alert alert-primary alert-dismissible collapse" role="alert">
                                 <div id="trans_category_edit_message"></div>
-                                <button type="button" class="close"  data-hide="alert"><span aria-hidden="true">&times;</span></button>
+                                <button id="button_close_edit_message" type="button" class="close"  ><span aria-hidden="true">&times;</span></button>
                             </div>
                         </div>
 
@@ -287,6 +287,10 @@
 
     $("#trans_delete_alert_hide").click(function(){
         $('#trans_delete_alert').collapse("hide");
+    });
+
+    $("#button_close_edit_message").click(function(){
+        $('#trans_category_edit_allert').collapse("hide");
     });
 
     $("#button_trans_delete").click(function(){
@@ -338,6 +342,11 @@
                 $(result.responseJSON.errors).each(function() {
                     $('#trans_category_input_'+this.field).addClass('is-invalid');
                 });
+                if (result.message != ""){
+                    $('#trans_category_input_'+this.field).addClass('is-invalid');
+                    $('#trans_category_edit_allert').collapse("show");
+                    $('#trans_category_edit_message').html(result.responseJSON.message);
+                }
             }
         });
     });

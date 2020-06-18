@@ -63,6 +63,19 @@ public class TransactionCategoryService {
 
     public TransactionCategory save(TransactionCategory transactionCategory){
         transactionCategory.setUser(usersService.getAuthUser());
+        if (null == transactionCategory.getId()){
+            List<TransactionCategory> list;
+            if (transactionCategory.getTransactionType().getTransactionType() == TransactionType.INCOME){
+                list = getIncomes();
+            } else {
+                list = getExpenses();
+            }
+            list.forEach(t -> {
+                if (t.getName().trim().toLowerCase().equals(transactionCategory.getName().trim().toLowerCase())){
+                    throw new ServiceException(messages.get("error.category.name.exist"));
+                }
+            });
+        }
         return repository.save(transactionCategory);
     }
 
