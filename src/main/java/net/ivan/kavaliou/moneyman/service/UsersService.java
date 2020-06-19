@@ -104,7 +104,7 @@ public class UsersService {
             throw new ServiceException(messages.get("error.password.matches"));
         }
         if (form.getPassword().equals(user.getPassword())){
-            throw new ServiceException(messages.get("error.password.old"));
+            throw new ServiceException(messages.get("error.password.nochange"));
         }
         Collection<SimpleGrantedAuthority> nowAuthorities =(Collection<SimpleGrantedAuthority>)SecurityContextHolder
                 .getContext().getAuthentication().getAuthorities();

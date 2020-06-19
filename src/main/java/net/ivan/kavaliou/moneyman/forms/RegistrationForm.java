@@ -14,19 +14,19 @@ import javax.validation.constraints.*;
 public class RegistrationForm {
 
     @Email
-    @NotBlank(message = "error.notBlank")
+    @NotBlank(message = "{error.notBlank}")
     private String email;
 
-    @Size(min = 4, max = 16, message = "error.password.size")
-    @NotBlank (message = "error.notBlank")
+    @Size(min = 4, max = 16, message = "{error.password.size}")
+    @NotBlank (message = "{error.notBlank}")
     private String password;
 
-    @NotBlank (message = "error.notBlank")
+    @NotBlank (message = "{error.notBlank}")
     private String passwordRepeat;
 
-    @AssertTrue (message = "error.agrements")
+    @AssertTrue (message = "{error.agrements}")
     private boolean agrements;
 
-    @NotNull (message = "error.notBlank")
+    @NotNull (message = "{error.notBlank}")
     private CurrencyType currency;
 }

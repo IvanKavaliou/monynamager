@@ -1,8 +1,8 @@
 package net.ivan.kavaliou.moneyman.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
-import net.ivan.kavaliou.moneyman.exceptions.NotFoundException;
 import net.ivan.kavaliou.moneyman.exceptions.ServiceException;
+import net.ivan.kavaliou.moneyman.forms.ChangeEmailForm;
 import net.ivan.kavaliou.moneyman.forms.LoginForm;
 import net.ivan.kavaliou.moneyman.forms.PasswordChangeForm;
 import net.ivan.kavaliou.moneyman.forms.RegistrationForm;
@@ -13,10 +13,9 @@ import net.ivan.kavaliou.moneyman.utils.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.Optional;
+
 
 @Slf4j
 @RestController
@@ -34,19 +33,22 @@ public class UserRestController {
 
     @PostMapping("/change/email")
     @ResponseStatus(HttpStatus.OK)
-    public String changeEmail(@RequestBody @Valid @NotBlank(message = "error.notBlank") String email){
-        log.debug("UserRestController::changeEmail user = {}, email = {}", usersService.getAuthUser(), email);
-        if (email.trim().toLowerCase().equals(usersService.getAuthUser())){
-            throw new ServiceException("error.email.nochange");
+    public ChangeEmailForm changeEmail(@RequestBody @Valid  ChangeEmailForm form){
+        log.debug("UserRestController::changeEmail user = {}, form = {}", usersService.getAuthUser(), form);
+        if (form.getEmail().trim().toLowerCase().equals(usersService.getAuthUser().getEmail().toLowerCase().trim())){
+            throw new ServiceException(messages.get("error.email.nochange"));
         }
-        return usersService.changeEmail(email).getEmail();
+
+        form.setEmail(usersService.changeEmail(form.getEmail()).getEmail());
+        return form;
     }
 
     @PostMapping("/change/password")
     @ResponseStatus(HttpStatus.OK)
-    public void changePassword(@RequestBody @Valid PasswordChangeForm form){
+    public PasswordChangeForm changePassword(@RequestBody @Valid PasswordChangeForm form){
         log.debug("UserRestController::changePassword user = {}, form = {}", usersService.getAuthUser(), form);
         usersService.chanhePassword(form);
+        return form;
     }
 
     @PostMapping("/login")

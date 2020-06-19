@@ -99,10 +99,15 @@ $('#button_password_close').click(function () {
 });
 
 $('#button_email_save').click(function () {
+
+    var formData = {
+        'email': $('#input_email').val()
+    };
+
     $.ajax({
         url: "rest/change/email",
         type: "post",
-        data: $('#input_email').val(),
+        data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(a) {
             console.log(a);

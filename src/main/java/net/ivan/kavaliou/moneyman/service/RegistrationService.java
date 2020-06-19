@@ -29,7 +29,7 @@ public class RegistrationService {
     public User registerUser(RegistrationForm form){
         log.info("RegistrationService::registrUser - {}", form);
         User user = new User();
-        user.setEmail(form.getEmail());
+        user.setEmail(form.getEmail().trim().toLowerCase());
         user.setPassword(form.getPassword());
         user.setRoles(Collections.singleton(UserRoles.USER));
         Currency currency = currencyService.get(form.getCurrency()).get();
