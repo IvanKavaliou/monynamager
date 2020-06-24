@@ -102,11 +102,11 @@ public class TransactionService {
     }
 
     public BigDecimal getIncomeWeeklyAmount(CurrencyType currency){
-        return getAmount(TransactionType.INCOME, currency,LocalDateTime.now().with(LocalTime.MIDNIGHT).minusDays(7) ,LocalDateTime.now().with(LocalTime.MIDNIGHT));
+        return getAmount(TransactionType.INCOME, currency,LocalDateTime.now().with(LocalTime.MIDNIGHT).minusDays(7) ,LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT));
     }
 
     public BigDecimal getExpensesWeeklyAmount(CurrencyType currency){
-        return getAmount(TransactionType.EXPENSES, currency,LocalDateTime.now().with(LocalTime.MIDNIGHT).minusDays(7) ,LocalDateTime.now().with(LocalTime.MIDNIGHT));
+        return getAmount(TransactionType.EXPENSES, currency,LocalDateTime.now().with(LocalTime.MIDNIGHT).minusDays(7) ,LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT));
     }
 
     public BigDecimal getIncomeMonthAmount(CurrencyType currency){
