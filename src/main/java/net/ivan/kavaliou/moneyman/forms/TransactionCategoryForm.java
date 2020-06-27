@@ -17,9 +17,9 @@ public class TransactionCategoryForm {
 
     private Integer id;
 
-    @NotEmpty(message = "error.notBlank")
+    @NotEmpty(message = "{error.notBlank}")
     private String name;
 
-    @NotNull(message = "error.notBlank")
+    @NotNull(message = "{error.notBlank}")
     private TransactionType transactionType;
 }

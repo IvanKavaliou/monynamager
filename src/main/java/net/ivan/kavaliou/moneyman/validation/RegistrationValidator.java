@@ -3,6 +3,7 @@ package net.ivan.kavaliou.moneyman.validation;
 import net.ivan.kavaliou.moneyman.forms.RegistrationForm;
 import net.ivan.kavaliou.moneyman.service.CurrencyService;
 import net.ivan.kavaliou.moneyman.service.UsersService;
+import net.ivan.kavaliou.moneyman.utils.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -17,6 +18,9 @@ public class RegistrationValidator implements Validator {
     @Autowired
     CurrencyService currencyService;
 
+    @Autowired
+    Messages messages;
+
     @Override
     public boolean supports(Class<?> aClass) {
         return RegistrationForm.class.equals(aClass);
@@ -26,15 +30,15 @@ public class RegistrationValidator implements Validator {
     public void validate(Object o, Errors errors) {
         RegistrationForm form = (RegistrationForm) o;
         if (usersService.findByEmail(form.getEmail()).isPresent()){
-            errors.rejectValue("email", "", "error.registration.userExsist");
+            errors.rejectValue("email", "", messages.get("error.registration.userExsist"));
         }
 
         if (!currencyService.get(form.getCurrency()).isPresent()){
-            errors.rejectValue("currency", "", "error.wrongValue");
+            errors.rejectValue("currency", "", messages.get("error.wrongValue"));
         }
 
         if (!form.getPassword().equals(form.getPasswordRepeat())){
-            errors.rejectValue("password", "","error.passwordMatch");
+            errors.rejectValue("password", "",messages.get("error.passwordMatch"));
         }
 
     }

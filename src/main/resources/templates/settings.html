@@ -114,7 +114,13 @@ $('#button_email_save').click(function () {
             window.location.replace("/settings");
         },
         error: function(result) {
-                $('#errors').html(result.responseJSON.message);
+            if(result.responseJSON.status == '400'){
+                $.each(result.responseJSON.errors, function (i, item) {
+                    $("#errors").append(item.defaultMessage + "</br>");
+                });
+            } else {
+                $("#errors").html(result.responseJSON.message);
+            }
         }
     });
 });
@@ -136,7 +142,13 @@ $('#button_password_save').click(function () {
             window.location.replace("/settings");
         },
         error: function(result) {
-            $('#errors').html(result.responseJSON.message);
+            if(result.responseJSON.status == '400'){
+                $.each(result.responseJSON.errors, function (i, item) {
+                    $("#errors").append(item.defaultMessage + "</br>");
+                });
+            } else {
+                $("#errors").html(result.responseJSON.message);
+            }
         }
     });
 });

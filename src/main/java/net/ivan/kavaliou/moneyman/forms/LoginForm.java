@@ -7,10 +7,10 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class LoginForm {
-    @Email (message = "error.email.format")
-    @NotBlank(message = "error.notBlank")
+    @Email (message = "{error.email.format}")
+    @NotBlank(message = "{error.notBlank}")
     private String email;
 
-    @NotBlank (message = "error.notBlank")
+    @NotBlank (message = "{error.notBlank}")
     private String password;
 }

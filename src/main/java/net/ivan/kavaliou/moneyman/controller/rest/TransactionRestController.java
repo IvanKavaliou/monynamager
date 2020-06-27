@@ -128,7 +128,9 @@ public class TransactionRestController {
                 .name(t.getName())
                 .date(DateTimeUtils.parseDate(t.getDate()))
                 .build()));
-        return  transactionFormList.stream().sorted(Comparator.comparing(TransactionForm::getDate, Comparator.nullsLast(Comparator.reverseOrder()))).collect(Collectors.toList());
+        return  transactionFormList.stream()
+                .sorted(Comparator.comparing(TransactionForm::getDate, Comparator.nullsLast(Comparator.reverseOrder())))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/amount/{type}/{currency}")

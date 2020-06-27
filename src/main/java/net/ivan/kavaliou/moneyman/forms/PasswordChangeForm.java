@@ -7,13 +7,13 @@ import javax.validation.constraints.Size;
 @Data
 public class PasswordChangeForm {
 
-    @NotBlank (message = "error.notBlank")
+    @NotBlank (message = "{error.notBlank}")
     String oldPassword;
 
-    @Size(min = 4, max = 16, message = "error.password.size")
-    @NotBlank (message = "error.notBlank")
+    @Size(min = 4, max = 16, message = "{error.password.size}")
+    @NotBlank (message = "{error.notBlank}")
     String password;
 
-    @NotBlank(message = "error.notBlank")
+    @NotBlank(message = "{error.notBlank}")
     String passwordRepeat;
 }
